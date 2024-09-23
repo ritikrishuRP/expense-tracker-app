@@ -18,6 +18,27 @@ const signupDetail = async (req, res) => {
     
 }
 
+const loginDetail = async (req, res) => {
+    const {email, password} = req.body;
+    try {
+        const user = await User.findOne({where: { email }});
+
+        if(!user){
+            return res.status(404).json({message: 'User not found'});
+        }
+
+        if(user.password !== password){
+            return res.status(401).json({message: 'User not authorized'});
+        }
+
+        res.status(200).json({message: 'User login successfully'})
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error in login controller' });
+    }
+}
+
 module.exports = {
-    signupDetail
+    signupDetail,
+    loginDetail
 }

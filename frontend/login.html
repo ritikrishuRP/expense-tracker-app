@@ -3,37 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense-Tracker</title>
+    <title>Document</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+        html, body {
+    height: 100vh; /* Ensure the body and html cover full height */
+    margin: 0; /* Remove default margin */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #a2a8d3; /* Apply background color to body */
+}
 
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            background-color:#a2a8d3;
-        }
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Full width */
+    height: 100%; /* Full viewport height */
+    background-color:#a2a8d3;
+}
 
-        .form-card {
-            background-color: #e7eaf6;
-            padding: 30px;
-            border-radius: 30px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
+.form-card {
+    background-color: #e7eaf6;
+    padding: 30px;
+    border-radius: 30px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
 
         h2 {
             color: #333;
@@ -88,25 +87,23 @@
         </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container"></div>
         <div class="form-card">
-            <h2>Sign Up</h2>
-            <form id="signup">
-                <label for="name">Enter your name</label>
-                <input type="text" id="name" name="name" required>
-
+            <h2>LogIn</h2>
+            <form id="login">
                 <label for="email">Enter your email</label>
                 <input type="text" id="email" name="email" required>
 
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required> 
 
-                <button type="submit">Submit</button>
-                <p>If you are already user, <a href="http://localhost:3000/login" class="link">click here to logIn</a>.</p>
+                <button type="submit">Login</button>
+                <p>If you are not user, <a href="http://localhost:3000" class="link">click here to signUp</a>.</p>
+                <div id="errorMessage" class="error"></div>
             </form>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="/signup.js"></script>
+    <script src="/login.js"></script>
 </body>
 </html>

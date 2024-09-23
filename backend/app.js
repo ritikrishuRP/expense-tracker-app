@@ -17,10 +17,14 @@ app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 app.use('/api', userRoute);
 
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'frontend', 'signup.html'));
 });
 
+app.get('/login', (req,res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'login.html'));
+})
 sequelize
   .sync()
   .then(result => {
