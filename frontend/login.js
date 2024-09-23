@@ -30,6 +30,6 @@ document.getElementById('login').addEventListener('submit', function(event){
         document.getElementById('password').value = '';
     })
     .catch(function(error){
-        console.log('Error in creating blog post', error)
+        console.log('Error in creating login post', error)
     })
 })

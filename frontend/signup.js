@@ -22,6 +22,6 @@ document.getElementById('signup').addEventListener('submit', function(event){
 
     })
     .catch(function(error){
-        console.log('Error in creating blog post', error)
+        console.log('Error in creating signup post', error)
     })
 })
