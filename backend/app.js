@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const userRoute = require('./route/user.route')
+const expenseRoute = require('./route/expense.route')
 
 const app = express();
 
@@ -15,16 +16,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Serve static files from the 'frontend' directory
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
+
 app.use('/api', userRoute);
+app.use('/expense', expenseRoute);
 
+app.get('/index.html', (req, res) => {
+  res.sendFile(path.join(__dirname,'..','frontend','index.html'));
+});
 
-app.get('/', (req, res) => {
+app.get('/signup', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'frontend', 'signup.html'));
 });
 
 app.get('/login', (req,res) => {
   res.sendFile(path.join(__dirname, '..', 'frontend', 'login.html'));
 })
+
 sequelize
   .sync()
   .then(result => {

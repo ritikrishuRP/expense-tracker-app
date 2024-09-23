@@ -28,6 +28,7 @@ document.getElementById('login').addEventListener('submit', function(event){
 
         document.getElementById('email').value= '';
         document.getElementById('password').value = '';
+        window.location.href = "../index.html";
     })
     .catch(function(error){
         console.log('Error in creating login post', error)
