@@ -5,7 +5,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const userRoute = require('./route/user.route')
-const expenseRoute = require('./route/expense.route')
+const expenseRoute = require('./route/expense.route');
+const User = require('./model/user.model');
+const Expense = require('./model/expense.model');
 
 const app = express();
 
@@ -14,7 +16,9 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Serve static files from the 'frontend' directory
-app.use(express.static(path.join(__dirname, '..', 'frontend')));
+app.use(express.static(path.join(__dirname, '..', 'frontend'), {
+  index: false // This will prevent index.html from being served by default
+}));
 
 
 app.use('/api', userRoute);
@@ -31,6 +35,9 @@ app.get('/signup', (req, res) => {
 app.get('/login', (req,res) => {
   res.sendFile(path.join(__dirname, '..', 'frontend', 'login.html'));
 })
+
+User.hasMany(Expense, { foreignKey: 'userId' });
+Expense.belongsTo(User, { foreignKey: 'userId' });
 
 sequelize
   .sync()

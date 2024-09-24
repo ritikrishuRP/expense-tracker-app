@@ -14,9 +14,11 @@ document.getElementById('addExpense').addEventListener('submit', function(event)
         description: description,
         category: category
     }
+    
+    const token = localStorage.getItem('token');
 
     console.log(expenseDetails)
-    axios.post('http://localhost:3000/expense/addExpense', expenseDetails)
+    axios.post('http://localhost:3000/expense/addExpense',expenseDetails, { headers: {"Authorization" : token} })
     .then((response => {
 
         console.log('Expense created successfully:', response.data);
@@ -28,7 +30,8 @@ document.getElementById('addExpense').addEventListener('submit', function(event)
 })
 
 function fetchExpenses() {
-    axios.get('http://localhost:3000/expense/getExpense')
+    const token = localStorage.getItem('token')
+    axios.get('http://localhost:3000/expense/getExpense', { headers: {"Authorization" : token}})
     .then(function(response) {
         const expenseList = document.getElementById('listOfExpense');
         expenseList.innerHTML = ''; 
@@ -62,7 +65,8 @@ function addNewExpensetoUI(expense) {
 
     // Add a click event listener to the delete button
     deleteBtn.addEventListener('click', function() {
-        axios.delete(`http://localhost:3000/expense/deleteExpense/${expense.id}`)
+        const token = localStorage.getItem('token');
+        axios.delete(`http://localhost:3000/expense/deleteExpense/${expense.id}`, { headers: {"Authorization" : token}})
         .then(response => {
             console.log('Expense deleted successfully:', response.data);
 

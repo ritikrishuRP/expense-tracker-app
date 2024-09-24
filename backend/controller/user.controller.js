@@ -1,5 +1,6 @@
 const User = require('../model/user.model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 
 const signupDetail = async (req, res) => {
@@ -22,6 +23,10 @@ const signupDetail = async (req, res) => {
     
 }
 
+function generateAccessToken(id, name){
+    return jwt.sign({ userId: id, name: name}, 'hdu787rf2bf27832brfdb93r83rfb823r');
+}
+
 const loginDetail = async (req, res) => {
     const {email, password} = req.body;
     try {
@@ -37,7 +42,7 @@ const loginDetail = async (req, res) => {
             return res.status(401).json({ message: 'User not authorized'});
         }
 
-        res.status(200).json({message: 'User login successfully'})
+        res.status(200).json({message: 'User login successfully', token: generateAccessToken(user.id, user.name)})
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error in login controller' });

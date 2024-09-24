@@ -4,13 +4,16 @@ const Expense = require('../model/expense.model');
 const expenseDetail = async (req, res) => {
     try {
         const {expense, description, category} = req.body;
+        const userId = req.user.id;
 
         if (!expense || !description || !category) {
             return res.status(400).json({ error: 'All fields are required.' });
         }
 
+        console.log('User from token:', req.user.id);
+
         
-        const expenseDetails = await Expense.create({expense, description, category});
+        const expenseDetails = await Expense.create({expense, description, category, userId: userId});
         res.status(201).json(expenseDetails);
     } catch (error) {
         console.error('Error in expense Detail uploading', error); 
@@ -22,6 +25,7 @@ const expenseDetail = async (req, res) => {
 const fetchExpense = async (req, res) => {
     try {
         const allExpenses = await Expense.findAll({
+            where: {userId: req.user.id},
             order: [['createdAt', 'DESC']],
         });
         console.log(allExpenses)
@@ -37,12 +41,13 @@ const fetchExpense = async (req, res) => {
 const deleteExpense = async (req, res) => {
     try {
         const expenseId = req.params.expenseId;
+        //const userId = req.user.id;
 
        
         const expense = await Expense.findByPk(expenseId);
 
-        if (!expense) {
-            return res.status(404).json({ error: 'Expense not found.' });
+        if (!expense || expense.userId !== req.user.id) {  // Ensure the expense belongs to the logged-in user
+            return res.status(404).json({ error: 'Expense not found or not authorized.' });
         }
 
        
