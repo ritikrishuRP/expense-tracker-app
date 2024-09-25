@@ -6,8 +6,11 @@ const cors = require('cors');
 
 const userRoute = require('./route/user.route')
 const expenseRoute = require('./route/expense.route');
+const purchaseRoute = require('./route/purchase.route')
+
 const User = require('./model/user.model');
 const Expense = require('./model/expense.model');
+const Order = require('./model/order.model')
 
 const app = express();
 
@@ -23,6 +26,7 @@ app.use(express.static(path.join(__dirname, '..', 'frontend'), {
 
 app.use('/api', userRoute);
 app.use('/expense', expenseRoute);
+app.use('/purchase', purchaseRoute);
 
 app.get('/index.html', (req, res) => {
   res.sendFile(path.join(__dirname,'..','frontend','index.html'));
@@ -38,6 +42,9 @@ app.get('/login', (req,res) => {
 
 User.hasMany(Expense, { foreignKey: 'userId' });
 Expense.belongsTo(User, { foreignKey: 'userId' });
+
+User.hasMany(Order, { foreignKey: 'userId' });
+Order.belongsTo(User, { foreignKey: 'userId' })
 
 sequelize
   .sync()
