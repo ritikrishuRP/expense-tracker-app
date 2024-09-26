@@ -1,26 +1,43 @@
 const Expense = require('../model/expense.model');
+const User = require('../model/user.model')
 
 
 const expenseDetail = async (req, res) => {
     try {
-        const {expense, description, category} = req.body;
+        const { expense, description, category } = req.body;
         const userId = req.user.id;
 
+        // Validate the input fields
         if (!expense || !description || !category) {
             return res.status(400).json({ error: 'All fields are required.' });
         }
 
         console.log('User from token:', req.user.id);
 
-        
-        const expenseDetails = await Expense.create({expense, description, category, userId: userId});
+        // Create the expense entry in the database
+        const expenseDetails = await Expense.create({ expense, description, category, userId });
+
+        // Calculate the new total expenses
+        const totalExpense = Number(req.user.totalExpenses) + Number(expenseDetails.expense); // Use expenseDetails.expense
+
+        console.log('New Total Expense:', totalExpense);
+
+        // Update the user's total expenses
+        await User.update({
+            totalExpenses: totalExpense
+        }, {
+            where: { id: req.user.id }
+        });
+
+        // Send response with the newly created expense
         res.status(201).json(expenseDetails);
+
     } catch (error) {
-        console.error('Error in expense Detail uploading', error); 
+        console.error('Error in expense detail creation:', error);
         res.status(500).json({ error: 'Failed to create expense detail' });
     }
-    
 }
+
 
 const fetchExpense = async (req, res) => {
     try {
