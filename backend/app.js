@@ -6,7 +6,8 @@ const cors = require('cors');
 
 const userRoute = require('./route/user.route')
 const expenseRoute = require('./route/expense.route');
-const purchaseRoute = require('./route/purchase.route')
+const purchaseRoute = require('./route/purchase.route');
+const premiumFeaturesRoute = require('./route/premiumFeatures.route')
 
 const User = require('./model/user.model');
 const Expense = require('./model/expense.model');
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, '..', 'frontend'), {
 app.use('/api', userRoute);
 app.use('/expense', expenseRoute);
 app.use('/purchase', purchaseRoute);
+app.use('/premium', premiumFeaturesRoute);
 
 app.get('/index.html', (req, res) => {
   res.sendFile(path.join(__dirname,'..','frontend','index.html'));

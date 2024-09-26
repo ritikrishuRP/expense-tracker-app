@@ -1,5 +1,7 @@
 const Razorpay = require('razorpay');
 const Order = require('../model/order.model');
+const userController = require('../controller/user.controller');
+
 
 const purchasePremium = async (req, res) => {
     try {
@@ -26,45 +28,31 @@ const purchasePremium = async (req, res) => {
 }
 
 const updateTransactionStatus = (req, res) => {
-    try {
-        const { payment_id, order_id } = req.body;
+    const { payment_id, order_id } = req.body;
+    const userId = req.user.id;
 
-        // Find the order based on the order_id
-        Order.findOne({ where: { orderid: order_id } })
-            .then(order => {
-                // Create two promises: one for updating the order and one for updating the user
-                const updateOrderPromise = order.update({ paymentid: payment_id, status: 'SUCCESSFUL' });
-                const updateUserPromise = req.user.update({ ispremiumUser: true });
+    Order.findOne({ where: { orderid: order_id } })
+        .then(order => {
+            const updateOrderPromise = order.update({ paymentid: payment_id, status: 'SUCCESSFUL' });
+            const updateUserPromise = req.user.update({ ispremiumUser: true });
 
-                // Use Promise.all to run both update operations in parallel
-                return Promise.all([updateOrderPromise, updateUserPromise]);
-            })
-            .then(() => {
-                // Once both updates are successful, send the response
-                return res.status(202).json({
-                    success: true,
-                    message: "Transaction Successful"
-                });
-            })
-            .catch(err => {
-                // Handle any error that occurs in the promises
-                console.error("Error updating transaction:", err);
-                return res.status(500).json({
-                    success: false,
-                    message: "Transaction failed",
-                    error: err.message
-                });
+            return Promise.all([updateOrderPromise, updateUserPromise]);
+        })
+        .then(() => {
+            return res.status(202).json({
+                success: true,
+                message: "Transaction Successful",
+                token: userController.generateAccessToken(userId, req.user.name, true) // Ensure token is updated to premium
             });
-
-    } catch (error) {
-        // Catch synchronous errors
-        console.error("Error in updateTransactionStatus:", error);
-        return res.status(500).json({
-            success: false,
-            message: "Something went wrong",
-            error: error.message
+        })
+        .catch(err => {
+            console.error("Error updating transaction:", err);
+            return res.status(500).json({
+                success: false,
+                message: "Transaction failed",
+                error: err.message
+            });
         });
-    }
 };
 
 

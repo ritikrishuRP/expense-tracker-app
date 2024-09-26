@@ -23,33 +23,36 @@ const signupDetail = async (req, res) => {
     
 }
 
-function generateAccessToken(id, name){
-    return jwt.sign({ userId: id, name: name}, 'hdu787rf2bf27832brfdb93r83rfb823r');
+function generateAccessToken(id, name, ispremiumUser) {
+    return jwt.sign({ userId: id, name: name, ispremiumUser}, 'hdu787rf2bf27832brfdb93r83rfb823r');
 }
 
 const loginDetail = async (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     try {
-        const user = await User.findOne({where: { email }});
+        const user = await User.findOne({ where: { email } });
 
-        if(!user){
-            return res.status(404).json({message: 'User not found'});
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
-
-        if(!isPasswordValid){
-            return res.status(401).json({ message: 'User not authorized'});
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'User not authorized' });
         }
 
-        res.status(200).json({message: 'User login successfully', token: generateAccessToken(user.id, user.name)})
+        res.status(200).json({
+            message: 'User login successfully', 
+            token: generateAccessToken(user.id, user.name, user.ispremiumUser)
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error in login controller' });
     }
-}
+};
 
 module.exports = {
     signupDetail,
-    loginDetail
+    loginDetail,
+    generateAccessToken
 }
