@@ -17,12 +17,12 @@ document.getElementById('addExpense').addEventListener('submit', function (event
 
     const token = localStorage.getItem('token');
 
-    console.log(expenseDetails)
+    console.log(expenseDetails);
     axios.post('http://localhost:3000/expense/addExpense', expenseDetails, { headers: { "Authorization": token } })
-        .then((response => {
+        .then((response) => {
             console.log('Expense created successfully:', response.data);
-            fetchExpenses();
-        }))
+            fetchExpenses(); // Fetch updated expenses after adding
+        })
         .catch(err => console.log(err));
 });
 
@@ -42,14 +42,14 @@ function parseJwt(token) {
 }
 
 function fetchExpenses() {
-    console.log('hii');
+    console.log('Fetching expenses...');
     const token = localStorage.getItem('token');
     const decodeToken = parseJwt(token);
 
-    console.log('Decoded token:', decodeToken); // Log the decoded token
+    console.log('Decoded token:', decodeToken);
     
     const ispremiumUser = decodeToken.ispremiumUser;
-    console.log('Is Premium User:', ispremiumUser); // Log to check if the flag is set correctly
+    console.log('Is Premium User:', ispremiumUser);
 
     if (ispremiumUser) {
         showPremiumUserMessage();
@@ -58,6 +58,7 @@ function fetchExpenses() {
 
     axios.get('http://localhost:3000/expense/getExpense', { headers: { "Authorization": token } })
         .then(function (response) {
+            console.log("Fetched expenses response:", response.data); // Log the fetched expenses
             const expenseList = document.getElementById('listOfExpense');
             expenseList.innerHTML = '';
 
@@ -72,6 +73,7 @@ function fetchExpenses() {
             console.error("Error fetching expenses:", error);
         });
 }
+
 
 function addNewExpensetoUI(expense) {
     const expenseList = document.getElementById('listOfExpense');
@@ -89,6 +91,10 @@ function addNewExpensetoUI(expense) {
             .then(response => {
                 console.log('Expense deleted successfully:', response.data);
                 li.remove();
+                fetchExpenses(); // Refresh the expenses list after deletion
+                if (document.getElementById('leaderboard')) {
+                    showLeaderboard(); // Refresh leaderboard if it's already shown
+                }
             })
             .catch(err => {
                 console.error('Error deleting expense:', err);
@@ -99,23 +105,39 @@ function addNewExpensetoUI(expense) {
     expenseList.appendChild(li);
 }
 
-function showLeaderboard(){
+function showLeaderboard() {
     const inputElement = document.createElement('input');
-    inputElement.type = 'button'
-    inputElement.value = 'Show Leaderboard'
-    inputElement.onclick = async() => {
-        const token = localStorage.getItem('token')
-        const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showLeaderBoard', { headers: { "Authorization": token } })
-        console.log(userLeaderBoardArray);
+    inputElement.type = 'button';
+    inputElement.value = 'Show Leaderboard';
+    inputElement.onclick = async () => {
+        const token = localStorage.getItem('token');
 
-        var leaderBoardElem = document.getElementById('leaderboard')
-        leaderBoardElem.innerHTML += '<h1> Leader Board</h1>'
-        userLeaderBoardArray.data.forEach((userDetails) => {
-            leaderBoardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.totalExpenses}`
-        })
-    }
+        try {
+            // Fetch leaderboard data
+            const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showLeaderBoard', {
+                headers: { "Authorization": token }
+            });
+
+            console.log(userLeaderBoardArray);
+
+            // Clear existing leaderboard content before adding new data
+            const leaderBoardElem = document.getElementById('leaderboard');
+            leaderBoardElem.innerHTML = ''; // Clear the previous leaderboard content
+
+            leaderBoardElem.innerHTML = '<h1> Leaderboard</h1>';
+            
+            // Add the new leaderboard data
+            userLeaderBoardArray.data.forEach((userDetails) => {
+                leaderBoardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.totalExpenses}</li>`;
+            });
+        } catch (error) {
+            console.error("Error fetching leaderboard:", error);
+        }
+    };
+
     document.getElementById('message').appendChild(inputElement);
 }
+
 
 document.getElementById('rzp-button1').onclick = async function (e) {
     e.preventDefault(); 
