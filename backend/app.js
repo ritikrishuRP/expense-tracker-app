@@ -14,6 +14,7 @@ const resetPassword = require('./route/forgotpassword.route')
 const User = require('./model/user.model');
 const Expense = require('./model/expense.model');
 const Order = require('./model/order.model');
+const ForgotPassword = require('./model/forgotpassword.model')
 
 dotenv.config();
 
@@ -52,6 +53,9 @@ Expense.belongsTo(User, { foreignKey: 'userId' });
 
 User.hasMany(Order, { foreignKey: 'userId' });
 Order.belongsTo(User, { foreignKey: 'userId' })
+
+User.hasMany(ForgotPassword, { foreignKey: 'userId' });
+ForgotPassword.belongsTo(User, { foreignKey: 'userId' });
 
 sequelize
   .sync()
