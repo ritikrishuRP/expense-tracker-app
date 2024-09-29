@@ -22,6 +22,7 @@ document.getElementById('addExpense').addEventListener('submit', function (event
         .then((response) => {
             console.log('Expense created successfully:', response.data);
             fetchExpenses(); // Fetch updated expenses after adding
+            renderLeaderboard(); // Update leaderboard if it's currently displayed
         })
         .catch(err => console.log(err));
 });
@@ -74,7 +75,6 @@ function fetchExpenses() {
         });
 }
 
-
 function addNewExpensetoUI(expense) {
     const expenseList = document.getElementById('listOfExpense');
 
@@ -92,9 +92,7 @@ function addNewExpensetoUI(expense) {
                 console.log('Expense deleted successfully:', response.data);
                 li.remove();
                 fetchExpenses(); // Refresh the expenses list after deletion
-                if (document.getElementById('leaderboard')) {
-                    showLeaderboard(); // Refresh leaderboard if it's already shown
-                }
+                renderLeaderboard(); // Update leaderboard if it's currently displayed
             })
             .catch(err => {
                 console.error('Error deleting expense:', err);
@@ -106,38 +104,53 @@ function addNewExpensetoUI(expense) {
 }
 
 function showLeaderboard() {
-    const inputElement = document.createElement('input');
-    inputElement.type = 'button';
-    inputElement.value = 'Show Leaderboard';
-    inputElement.onclick = async () => {
-        const token = localStorage.getItem('token');
+    // Check if the 'Show Leaderboard' button already exists
+    if (!document.getElementById('showLeaderboardBtn')) {
+        const inputElement = document.createElement('input');
+        inputElement.type = 'button';
+        inputElement.value = 'Show Leaderboard';
+        inputElement.id = 'showLeaderboardBtn';
+        inputElement.onclick = async () => {
+            await renderLeaderboard();
+            document.getElementById('leaderboard').setAttribute('data-leaderboard-shown', 'true');
+        };
 
-        try {
-            // Fetch leaderboard data
-            const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showLeaderBoard', {
-                headers: { "Authorization": token }
-            });
-
-            console.log(userLeaderBoardArray);
-
-            // Clear existing leaderboard content before adding new data
-            const leaderBoardElem = document.getElementById('leaderboard');
-            leaderBoardElem.innerHTML = ''; // Clear the previous leaderboard content
-
-            leaderBoardElem.innerHTML = '<h1> Leaderboard</h1>';
-            
-            // Add the new leaderboard data
-            userLeaderBoardArray.data.forEach((userDetails) => {
-                leaderBoardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.totalExpenses}</li>`;
-            });
-        } catch (error) {
-            console.error("Error fetching leaderboard:", error);
-        }
-    };
-
-    document.getElementById('message').appendChild(inputElement);
+        document.getElementById('message').appendChild(inputElement);
+    }
 }
 
+async function renderLeaderboard() {
+    const leaderBoardElem = document.getElementById('leaderboard');
+
+    // Check if the leaderboard is currently displayed
+    if (leaderBoardElem.getAttribute('data-leaderboard-shown') !== 'true') {
+        // Leaderboard is not shown, do not fetch
+        return;
+    }
+
+    const token = localStorage.getItem('token');
+
+    try {
+        // Fetch leaderboard data
+        const userLeaderBoardArray = await axios.get('http://localhost:3000/premium/showLeaderBoard', {
+            headers: { "Authorization": token }
+        });
+
+        console.log(userLeaderBoardArray);
+
+        // Clear existing leaderboard content before adding new data
+        leaderBoardElem.innerHTML = ''; // Clear the previous leaderboard content
+
+        leaderBoardElem.innerHTML = '<h1> Leaderboard</h1>';
+        
+        // Add the new leaderboard data
+        userLeaderBoardArray.data.forEach((userDetails) => {
+            leaderBoardElem.innerHTML += `<li>Name - ${userDetails.name} Total Expense - ${userDetails.totalExpenses}</li>`;
+        });
+    } catch (error) {
+        console.error("Error fetching leaderboard:", error);
+    }
+}
 
 document.getElementById('rzp-button1').onclick = async function (e) {
     e.preventDefault(); 
@@ -167,7 +180,9 @@ document.getElementById('rzp-button1').onclick = async function (e) {
 
                     console.log("Transaction status updated:", updateResponse.data);
                     alert('You are a premium user now');
-                    localStorage.setItem('token', updateResponse.data.token)
+                    localStorage.setItem('token', updateResponse.data.token);
+                    fetchExpenses(); // Fetch expenses again to update premium status
+                    renderLeaderboard(); // Update leaderboard if it's currently displayed
                 } catch (updateError) {
                     console.error("Error updating transaction status:", updateError);
                 }

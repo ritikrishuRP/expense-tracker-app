@@ -3,15 +3,19 @@ const path = require('path');
 const sequelize = require('./util/database');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const dotenv = require("dotenv");
 
 const userRoute = require('./route/user.route')
 const expenseRoute = require('./route/expense.route');
 const purchaseRoute = require('./route/purchase.route');
-const premiumFeaturesRoute = require('./route/premiumFeatures.route')
+const premiumFeaturesRoute = require('./route/premiumFeatures.route');
+const resetPassword = require('./route/forgotpassword.route')
 
 const User = require('./model/user.model');
 const Expense = require('./model/expense.model');
-const Order = require('./model/order.model')
+const Order = require('./model/order.model');
+
+dotenv.config();
 
 const app = express();
 
@@ -29,6 +33,7 @@ app.use('/api', userRoute);
 app.use('/expense', expenseRoute);
 app.use('/purchase', purchaseRoute);
 app.use('/premium', premiumFeaturesRoute);
+app.use('/password', resetPassword);
 
 app.get('/index.html', (req, res) => {
   res.sendFile(path.join(__dirname,'..','frontend','index.html'));
