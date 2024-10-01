@@ -1,0 +1,481 @@
+/* css/style.css */
+
+/* =========================
+   1. Reset and Base Styles
+   ========================= */
+
+/* Reset default browser styles for consistency */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Apply a clean sans-serif font and base background */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+    line-height: 1.6;
+    padding-bottom: 60px; /* To prevent content from hiding behind the footer */
+}
+
+/* =========================
+   2. Navbar Styling
+   ========================= */
+
+.navbar {
+    background-color: #343a40;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navdiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.logo a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.navdiv ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.navdiv ul li {
+    margin-left: 20px;
+}
+
+.navdiv ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.navdiv ul li a:hover {
+    color: #adb5bd;
+}
+
+.navdiv ul button {
+    margin-left: 20px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #007bff;
+}
+
+.navdiv ul button a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.navdiv ul button:hover {
+    background-color: #0056b3;
+}
+
+.navdiv ul button:last-child {
+    background-color: #dc3545; /* Logout button color */
+}
+
+.navdiv ul button:last-child:hover {
+    background-color: #c82333;
+}
+
+/* =========================
+   3. Form Styling
+   ========================= */
+
+form#addExpense {
+    background-color: #fff;
+    padding: 20px 30px;
+    margin: 30px auto;
+    border-radius: 8px;
+    max-width: 600px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+form#addExpense label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #495057;
+}
+
+form#addExpense input[type="text"],
+form#addExpense input[type="number"],
+form#addExpense select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+form#addExpense button[type="submit"] {
+    background-color: #28a745;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+form#addExpense button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* =========================
+   4. Message Display Styling
+   ========================= */
+
+#message {
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: center;
+    font-size: 18px;
+    padding: 15px;
+    border-radius: 4px;
+    display: none; /* Hidden by default */
+}
+
+#message.success {
+    background-color: #d4edda;
+    color: #155724;
+    display: block;
+}
+
+#message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    display: block;
+}
+
+/* =========================
+   5. Buy Premium Button Styling
+   ========================= */
+
+#rzp-button1 {
+    display: block;
+    margin: 20px auto;
+    background-color: #ffc107;
+    color: #343a40;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    width: 200px;
+}
+
+#rzp-button1:hover {
+    background-color: #e0a800;
+}
+
+/* =========================
+   6. Filters Section Styling
+   ========================= */
+
+#report-select {
+    max-width: 600px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#report-select label {
+    font-weight: bold;
+    color: #495057;
+}
+
+#report-select select {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Hide forms by default */
+.hide {
+    display: none;
+}
+
+#report-select form {
+    background-color: #fff;
+    padding: 15px 20px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+#report-select form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #495057;
+}
+
+#report-select form input[type="date"],
+#report-select form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#report-select form button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+#report-select form button:hover {
+    background-color: #0056b3;
+}
+
+/* =========================
+   7. Download Button Styling
+   ========================= */
+
+#download-button {
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+#download-button button {
+    background-color: #17a2b8;
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 200px;
+}
+
+#download-button button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+#download-button button:not(:disabled):hover {
+    background-color: #138496;
+}
+
+/* =========================
+   8. Reports Display Styling
+   ========================= */
+
+#report-display {
+    max-width: 800px;
+    margin: 30px auto;
+}
+
+#report-display h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #495057;
+}
+
+#report-display h3 span {
+    color: #007bff;
+}
+
+#report-display table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#report-display table th,
+#report-display table td {
+    padding: 12px 15px;
+    border: 1px solid #dee2e6;
+    text-align: center;
+}
+
+#report-display table th {
+    background-color: #343a40;
+    color: #fff;
+}
+
+#report-display table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#report-display table tfoot tr td {
+    font-weight: bold;
+    background-color: #e9ecef;
+}
+
+/* =========================
+   9. Leaderboard Styling
+   ========================= */
+
+#leaderboard {
+    max-width: 800px;
+    margin: 30px auto;
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#leaderboard h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #495057;
+}
+
+#leaderboard ul {
+    list-style: none;
+}
+
+#leaderboard ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#leaderboard ul li:last-child {
+    border-bottom: none;
+}
+
+#leaderboard ul li span.rank {
+    font-weight: bold;
+    color: #007bff;
+}
+
+#leaderboard ul li span.name {
+    flex: 1;
+    text-align: left;
+    padding-left: 10px;
+}
+
+#leaderboard ul li span.amount {
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* =========================
+   10. Footer Styling
+   ========================= */
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #343a40;
+    color: #fff;
+    position: relative;
+}
+
+/* =========================
+   11. Responsive Design
+   ========================= */
+
+@media (max-width: 992px) {
+    .navdiv ul {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navdiv ul li {
+        margin: 10px 0;
+    }
+
+    #report-select {
+        width: 90%;
+    }
+
+    #report-display table th,
+    #report-display table td {
+        padding: 8px 10px;
+    }
+
+    #leaderboard ul li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #leaderboard ul li span.name {
+        padding-left: 0;
+    }
+
+    #leaderboard ul li span.amount {
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 576px) {
+    form#addExpense {
+        padding: 15px 20px;
+    }
+
+    #report-select form {
+        padding: 10px 15px;
+    }
+
+    #download-button button {
+        width: 100%;
+    }
+
+    #report-display table th,
+    #report-display table td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    #leaderboard ul li {
+        padding: 8px 0;
+        font-size: 14px;
+    }
+}
+
+/* =========================
+   12. Utility Classes
+   ========================= */
+
+/* Hide elements */
+.hide {
+    display: none !important;
+}
+
+/* Show elements */
+.show {
+    display: block !important;
+}

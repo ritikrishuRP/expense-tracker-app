@@ -202,3 +202,27 @@ document.getElementById('rzp-button1').onclick = async function (e) {
         console.error("Error fetching Razorpay order details:", error);
     }
 };
+
+document.getElementById('report-button').addEventListener('click', () => {
+    window.location.href = 'report.html';
+});
+
+
+function download(){
+    const token = localStorage.getItem('token');
+    axios.get('http://localhost:3000/user/download', { headers: {"Authorization" : token} })
+    .then((response) => {
+        if(response.status === 201){
+            var a = document.createElement("a");
+            a.href = response.data.fileUrl;
+            a.download = 'myexpense.csv';
+            a.click();
+        } else {
+            throw new Error(response.data.message)
+        }
+
+    })
+    .catch((err) => {
+        showError(err)
+    });
+}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View expense</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+</head>
+
+<body class="container my-2">
+
+    <div class="" id="report-select">
+        <label for="expense-display">Expenses : </label>
+
+        <select name="expense-display" id="expense-display">
+            <option value="daily">Day wise</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+        </select>
+
+        <form class="my-2" id="daily-form">
+            <label for="date">Select the date : </label>
+            <input type="date" name="date" id="date" required>
+            <button type="submit">submit</button>
+        </form>
+
+        <form class="hide my-2" id="monthly-form">
+            <label for="month-picker">Select the month : </label>
+
+            <select name="month-picker" id="month-picker" required>
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+
+            </select>
+            <label for="year-picker">Select the year : </label>
+
+            <select name="year-picker" id="year-picker" required>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+
+            </select>
+
+            <button type="submit">Submit</button>
+        </form>
+
+
+        <form class="hide my-2" id="yearly-form">
+            <label for="year-picker">Select the year : </label>
+
+            <select name="year-picker" id="year-picker" required>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+
+            </select>
+
+            <button type="submit">Submit</button>
+        </form>
+
+
+    </div>
+    <div id="report-display">
+        <div class="hide container" id="daily">
+            <h3> day to day expense report for the day : <span></span></h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>description</th>
+                        <th>amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total</td>
+                        <td id="daily-total">0</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="hide" id="weekly">
+            <h3>Weekly expense report</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>day of week</th>
+                        <th>amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total</td>
+                        <td id="weekly-total">0</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="hide" id="monthly">
+            <h3>Monthly expense report for the month: <span></span></h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total</td>
+                        <td id="monthly-total">0</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="hide" id="yearly">
+            <h3>Yearly expense report for the year : <span></span></h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>month</th>
+                        <th>amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total</td>
+                        <td id="yearly-total">0</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+<script src="js/report.js"></script>
+
+</html>

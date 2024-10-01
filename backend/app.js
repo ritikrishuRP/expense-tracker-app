@@ -9,7 +9,8 @@ const userRoute = require('./route/user.route')
 const expenseRoute = require('./route/expense.route');
 const purchaseRoute = require('./route/purchase.route');
 const premiumFeaturesRoute = require('./route/premiumFeatures.route');
-const resetPassword = require('./route/forgotpassword.route')
+const resetPassword = require('./route/forgotpassword.route');
+const reportRoute = require('./route/report.route')
 
 const User = require('./model/user.model');
 const Expense = require('./model/expense.model');
@@ -35,10 +36,11 @@ app.use('/expense', expenseRoute);
 app.use('/purchase', purchaseRoute);
 app.use('/premium', premiumFeaturesRoute);
 app.use('/password', resetPassword);
+app.use('/report', reportRoute);
 
-app.get('/index.html', (req, res) => {
-  res.sendFile(path.join(__dirname,'..','frontend','index.html'));
-});
+// app.get('/index.html', (req, res) => {
+//   res.sendFile(path.join(__dirname,'..','frontend','index.html'));
+// });
 
 app.get('/signup', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'frontend', 'signup.html'));
