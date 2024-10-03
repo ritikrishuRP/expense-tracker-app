@@ -210,9 +210,9 @@ document.getElementById('report-button').addEventListener('click', () => {
 
 function download(){
     const token = localStorage.getItem('token');
-    axios.get('http://localhost:3000/user/download', { headers: {"Authorization" : token} })
+    axios.get('http://localhost:3000/api/download', { headers: {"Authorization" : token} })
     .then((response) => {
-        if(response.status === 201){
+        if(response.status === 200){
             var a = document.createElement("a");
             a.href = response.data.fileUrl;
             a.download = 'myexpense.csv';
@@ -223,6 +223,55 @@ function download(){
 
     })
     .catch((err) => {
-        showError(err)
+        console.error("Error in download controller",err);
     });
 }
+
+// frontend/index.js
+
+/**
+ * Fetches and displays the list of previous download URLs.
+ */
+function fetchDownloadUrls() {
+    const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+
+    // Fetch the download URLs from the backend
+    axios.get('http://localhost:3000/expense/urls', {
+        headers: { "Authorization": token }
+    })
+    .then((response) => {
+        if (response.status === 200 && response.data.success) {
+            const downloadUrls = response.data.downloadUrls;
+
+            // Get the UL element where download links will be added
+            const urlList = document.querySelector('#download-urls ul');
+
+            // Clear any previous content in the list
+            urlList.innerHTML = '';
+
+            // Iterate through each download URL and add it to the list
+            downloadUrls.forEach(download => {
+                const listItem = document.createElement('li');
+                
+                const link = document.createElement('a');
+                link.href = download.url;
+                link.textContent = `Download file (${new Date(download.createdAt).toLocaleDateString()})`;
+                link.target = '_blank'; // Open in new tab
+
+                listItem.appendChild(link);
+                urlList.appendChild(listItem);
+            });
+
+            // Make the download section visible
+            document.getElementById('download-urls').classList.remove('hide');
+        } else {
+            console.error('Failed to fetch download URLs:', response.data.message);
+        }
+    })
+    .catch((error) => {
+        console.error('Error fetching download URLs:', error);
+    });
+}
+
+// Call fetchDownloadUrls when the page loads
+window.addEventListener('DOMContentLoaded', fetchDownloadUrls);

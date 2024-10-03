@@ -15,7 +15,8 @@ const reportRoute = require('./route/report.route')
 const User = require('./model/user.model');
 const Expense = require('./model/expense.model');
 const Order = require('./model/order.model');
-const ForgotPassword = require('./model/forgotpassword.model')
+const ForgotPassword = require('./model/forgotpassword.model');
+const Download = require('./model/download.model')
 
 dotenv.config();
 
@@ -58,6 +59,9 @@ Order.belongsTo(User, { foreignKey: 'userId' })
 
 User.hasMany(ForgotPassword, { foreignKey: 'userId' });
 ForgotPassword.belongsTo(User, { foreignKey: 'userId' });
+
+User.hasMany(Download, { foreignKey: 'userId' })
+Download.belongsTo(User, { foreignKey: 'userId' })
 
 sequelize
   .sync()

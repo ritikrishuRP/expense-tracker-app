@@ -1,6 +1,30 @@
 const Expense = require('../model/expense.model');
 const User = require('../model/user.model');
 const sequelize = require('../util/database');
+const S3Service = require('../services/S3services');
+const Download = require('../model/download.model')
+
+
+
+
+const downloadExpense = async (req,res) => {
+    try {
+        const expenses = await req.user.getExpenses();
+        const stringifiedExpenses = JSON.stringify(expenses);
+    
+        //It should depend upon the userid
+        const userId = req.user.id;
+        const filename = `Expense${userId}/${new Date()}.txt`;
+        const fileUrl = await S3Service.uploadToS3(stringifiedExpenses, filename);
+        let url = fileUrl
+        await req.user.createDownload({url: url})
+        res.status(200).json({fileUrl, success: true})
+    } catch (error) {
+        console.error('Error in downloadExpense:', error); 
+        res.status(500).json({fileURL: '', success: false, message: error.message});
+    }
+
+}
 
 const expenseDetail = async (req, res) => {
     const t = await sequelize.transaction();
@@ -107,10 +131,34 @@ const deleteExpense = async (req, res) => {
     }
 };
 
+
+
+const getDownloadUrls = async (req, res) => {
+    try {
+        const downloadRecords = await req.user.getDownloads(); 
+
+        const downloadUrls = downloadRecords.map(record => ({
+            id: record.id,   
+            url: record.url, 
+            createdAt: record.createdAt 
+        }));
+
+        res.status(200).json({ success: true, downloadUrls });
+    } catch (error) {
+        console.error('Error fetching download URLs:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch download URLs.' });
+    }
+};
+
+
+
+
 module.exports = {
     expenseDetail,
     fetchExpense,
-    deleteExpense
+    deleteExpense,
+    downloadExpense,
+    getDownloadUrls
 };
 
 
