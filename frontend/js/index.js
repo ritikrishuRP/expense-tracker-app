@@ -43,7 +43,7 @@ function parseJwt(token) {
 }
 
 let currentPage = 1;
-const limit = 4;
+let limit = 4;
 
 function fetchExpenses() {
     console.log('Fetching expenses...');
@@ -59,6 +59,8 @@ function fetchExpenses() {
         showPremiumUserMessage();
         showLeaderboard();
     }
+
+    limit = parseInt(document.getElementById('page-size').value, 10);
 
     axios.get(`http://localhost:3000/expense/getExpense?page=${currentPage}&limit=${limit}`, {
         headers: { "Authorization": token }
@@ -81,6 +83,11 @@ function fetchExpenses() {
         console.error("Error fetching expenses:", error);
     });
 }
+
+document.getElementById('page-size').addEventListener('change', function() {
+    currentPage = 1; // Reset to the first page when page size changes
+    fetchExpenses(); // Fetch expenses with the new page size
+});
 
 function updatePaginationControls(data) {
     const prevButton = document.getElementById('prev-page');
