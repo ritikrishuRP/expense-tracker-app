@@ -44,8 +44,13 @@
     <button onclick="download()" id="downloadexpense">Download File</button>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <h1>Expenses</h1>
-    <ul id="listOfExpense">
+    <ul id="listOfExpense"> 
     </ul>
+    <div id="pagination-controls">
+        <button id="prev-page" disabled>Previous</button>
+        <span id="current-page">Page: 1</span>
+        <button id="next-page">Next</button>
+    </div>
     <ul id="leaderboard">
         
     </ul>

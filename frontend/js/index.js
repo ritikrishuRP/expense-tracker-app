@@ -42,6 +42,9 @@ function parseJwt(token) {
     return JSON.parse(jsonPayload);
 }
 
+let currentPage = 1;
+const limit = 4;
+
 function fetchExpenses() {
     console.log('Fetching expenses...');
     const token = localStorage.getItem('token');
@@ -57,23 +60,59 @@ function fetchExpenses() {
         showLeaderboard();
     }
 
-    axios.get('http://localhost:3000/expense/getExpense', { headers: { "Authorization": token } })
-        .then(function (response) {
-            console.log("Fetched expenses response:", response.data); // Log the fetched expenses
-            const expenseList = document.getElementById('listOfExpense');
-            expenseList.innerHTML = '';
+    axios.get(`http://localhost:3000/expense/getExpense?page=${currentPage}&limit=${limit}`, {
+        headers: { "Authorization": token }
+    })
+    .then(function (response) {
+        console.log("Fetched expenses response:", response.data);
+        const expenseList = document.getElementById('listOfExpense');
+        expenseList.innerHTML = '';
 
-            const expenses = response.data;
-            if (Array.isArray(expenses)) {
-                expenses.forEach(expense => addNewExpensetoUI(expense));
-            } else {
-                console.error('Response data is not an array:', expenses);
-            }
-        })
-        .catch(function (error) {
-            console.error("Error fetching expenses:", error);
-        });
+        const expenses = response.data.expenses;
+        console.log('Expenses:', expenses); 
+        if (Array.isArray(expenses)) {
+            expenses.forEach(expense => addNewExpensetoUI(expense));
+        }
+
+        // Update pagination controls
+        updatePaginationControls(response.data);
+    })
+    .catch(function (error) {
+        console.error("Error fetching expenses:", error);
+    });
 }
+
+function updatePaginationControls(data) {
+    const prevButton = document.getElementById('prev-page');
+    const nextButton = document.getElementById('next-page');
+    const currentPageSpan = document.getElementById('current-page');
+
+    const totalPages = data.totalPages;
+    currentPageSpan.innerText = `Page: ${currentPage}`;
+
+
+    prevButton.disabled = currentPage === 1; 
+
+    
+    nextButton.disabled = currentPage === totalPages; 
+    
+    prevButton.onclick = function () {
+        if (currentPage > 1) {
+            currentPage--; 
+            fetchExpenses(); 
+        }
+    };
+
+    
+    nextButton.onclick = function () {
+        if (currentPage < totalPages) {
+            currentPage++; 
+            fetchExpenses(); 
+        }
+    };
+}
+
+
 
 function addNewExpensetoUI(expense) {
     const expenseList = document.getElementById('listOfExpense');
