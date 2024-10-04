@@ -59,6 +59,8 @@ app.get('/login', (req,res) => {
   res.sendFile(path.join(__dirname, '..', 'frontend', 'login.html'));
 })
 
+console.log(process.env.DB_HOST);
+
 User.hasMany(Expense, { foreignKey: 'userId' });
 Expense.belongsTo(User, { foreignKey: 'userId' });
 
