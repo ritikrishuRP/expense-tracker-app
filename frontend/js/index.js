@@ -321,3 +321,9 @@ function fetchDownloadUrls() {
 
 // Call fetchDownloadUrls when the page loads
 window.addEventListener('DOMContentLoaded', fetchDownloadUrls);
+
+document.getElementById('hamburger').addEventListener('click', function() {
+    const navDiv = document.querySelector('.navdiv');
+    navDiv.classList.toggle('open'); // Toggle the 'open' class to show/hide the menu
+});
+

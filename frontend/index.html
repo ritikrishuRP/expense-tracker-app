@@ -4,43 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <!-- <link rel="stylesheet" href="./css/style.css"> -->
+    <link rel="stylesheet" href="css/index.css">
 
 </head>
 <body>
     <nav class="navbar">
         <div class="navdiv">
             <div class="logo"><a href="#">Expense Tracker</a></div>
-            <ul>
+            <ul id="nav-links">
                 <li><a href="#">Home</a></li>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Home</a></li>
-                <li>
-                    <button id="report-button">Report</button>
-                </li>
-                <button><a href="#">Buy Premium</a></button>
-                <button><a href="#">LogOut</a></button>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">About</a></li>
+                <li><button id="report-button">Report</button></li>
+                <li><button id="rzp-button1">Buy Premium</button></li>
+                <div id="message"></div>
+                <li><button><a href="#">LogOut</a></button></li>
             </ul>
+            <div class="hamburger" id="hamburger">
+                &#9776; <!-- This is the hamburger icon (three horizontal lines) -->
+            </div>
         </div>
-
     </nav>
-    <form id="addExpense">
-            <label for="expense">Choose expense :</label>
+    
+    <div class="card">
+        <form id="addExpense">
+            <label for="expense">Expense:</label>
             <input type="text" id="expense" name="expense" required>
-            <label for="description">Choose description : </label>
+            
+            <label for="description">Description:</label>
             <input type="text" id="description" name="description" required>
-            <label for="category">Choose a category : </label>
+            
+            <label for="category">Category:</label>
             <select name="category" id="category">
-             <option value="movie" selected>movie</option>
-             <option value="fuel">fuel</option>
-             <option value="rent">rent</option>
-             <option value="food">food</option>
-             <option value="vacation">vacation</option>
-         </select>
-         <button type="submit">Add Expense</button>
-    </form>
-    <div id="message"></div>
-    <button id="rzp-button1">Buy Premium</button>
+                <option value="movie" selected>movie</option>
+                <option value="fuel">fuel</option>
+                <option value="rent">rent</option>
+                <option value="food">food</option>
+                <option value="vacation">vacation</option>
+            </select>
+            
+            <button type="submit">Add Expense</button>
+        </form>
+    </div>
+    
+    <!-- <div id="message"></div>
+    <button id="rzp-button1">Buy Premium</button> -->
     <button onclick="download()" id="downloadexpense">Download File</button>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <div>
