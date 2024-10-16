@@ -45,7 +45,7 @@ document.getElementById('daily-form').addEventListener('submit' , async(e)=>{
     const date = e.target.date.value
     try{
 
-        const res = await axios.post('http://34.239.2.148/report/getdate' 
+        const res = await axios.post('http://34.239.2.148:3000/report/getdate' 
             ,{date}
             ,{headers: { "Authorization": token }}
         )
@@ -93,7 +93,7 @@ document.getElementById('yearly-form').addEventListener('submit' , async(e)=>{
     const year = e.target['year-picker'].value
     try{
 
-        const res = await axios.post('http://34.239.2.148/report/getYearly' , {year}, { headers: { "Authorization": token } } )
+        const res = await axios.post('http://34.239.2.148:3000/report/getYearly' , {year}, { headers: { "Authorization": token } } )
         console.log(res)
         document.getElementById('daily').classList.add('hide')
         document.getElementById('monthly').classList.add('hide')
@@ -139,7 +139,7 @@ document.getElementById('monthly-form').addEventListener('submit' , async(e)=>{
     console.log(month)
     try{
 
-        const res = await axios.post('http://34.239.2.148/report/getMonthly' , {month}, { headers: { "Authorization": token } } )
+        const res = await axios.post('http://34.239.2.148:3000/report/getMonthly' , {month}, { headers: { "Authorization": token } } )
         console.log(res)
         document.getElementById('daily').classList.add('hide')
         document.getElementById('monthly').classList.remove('hide')
@@ -180,7 +180,7 @@ async function displayWeekly(){
     const token = localStorage.getItem('token');
     try{
 
-        const res = await axios.post('http://34.239.2.148/report/getweekly', { headers: { "Authorization": token } })
+        const res = await axios.post('http://34.239.2.148:3000/report/getweekly', { headers: { "Authorization": token } })
         console.log(res)
         document.getElementById('daily').classList.add('hide')
         document.getElementById('monthly').classList.add('hide')

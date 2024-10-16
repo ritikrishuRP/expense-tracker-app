@@ -18,7 +18,7 @@ document.getElementById('addExpense').addEventListener('submit', function (event
     const token = localStorage.getItem('token');
 
     console.log(expenseDetails);
-    axios.post('http://34.239.2.148/expense/addExpense', expenseDetails, { headers: { "Authorization": token } })
+    axios.post('http://34.239.2.148:3000/expense/addExpense', expenseDetails, { headers: { "Authorization": token } })
         .then((response) => {
             console.log('Expense created successfully:', response.data);
             fetchExpenses(); // Fetch updated expenses after adding
@@ -57,7 +57,7 @@ function fetchExpenses() {
     } 
     limit = parseInt(document.getElementById('page-size').value, 10);
 
-    axios.get(`http://34.239.2.148/expense/getExpense?page=${currentPage}&limit=${limit}`, {
+    axios.get(`http://34.239.2.148:3000/expense/getExpense?page=${currentPage}&limit=${limit}`, {
         headers: { "Authorization": token }
     })
     .then(function (response) {
@@ -167,7 +167,7 @@ function addNewExpensetoUI(expense) {
     deleteBtn.textContent = 'Delete';
     deleteBtn.addEventListener('click', function () {
         const token = localStorage.getItem('token');
-        axios.delete(`http://34.239.2.148/expense/deleteExpense/${expense.id}`, { headers: { "Authorization": token } })
+        axios.delete(`http://34.239.2.148:3000/expense/deleteExpense/${expense.id}`, { headers: { "Authorization": token } })
             .then(response => {
                 console.log('Expense deleted successfully:', response.data);
                 li.remove();
@@ -204,7 +204,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
 
     try {
         console.log("Fetching Razorpay order details...");
-        const response = await axios.get('http://34.239.2.148/purchase/premiummembership', {
+        const response = await axios.get('http://34.239.2.148:3000/purchase/premiummembership', {
             headers: { "Authorization": token }
         });
 
@@ -219,7 +219,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
                 try {
                     console.log("Updating transaction status...");
 
-                    const updateResponse = await axios.post('http://34.239.2.148/purchase/updatetransactionstatus', {
+                    const updateResponse = await axios.post('http://34.239.2.148:3000/purchase/updatetransactionstatus', {
                         order_id: options.order_id,
                         payment_id: paymentResponse.razorpay_payment_id,
                     }, { headers: { "Authorization": token } });
@@ -269,7 +269,7 @@ function toggleDownloadUrls() {
 // Function to download the latest expense as a CSV file
 function download(){
     const token = localStorage.getItem('token');
-    axios.get('http://34.239.2.148/api/download', { headers: {"Authorization" : token} })
+    axios.get('http://34.239.2.148:3000/api/download', { headers: {"Authorization" : token} })
     .then((response) => {
         if(response.status === 200){
             var a = document.createElement("a");
@@ -301,7 +301,7 @@ function fetchDownloadUrls() {
     }
 
     // Fetch the download URLs from the backend
-    axios.get('http://34.239.2.148/expense/urls', {
+    axios.get('http://34.239.2.148:3000/expense/urls', {
         headers: { "Authorization": token }
     })
     .then((response) => {

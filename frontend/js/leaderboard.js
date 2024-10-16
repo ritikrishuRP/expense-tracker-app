@@ -41,7 +41,7 @@ async function renderLeaderboard() {
 
     try {
         // Fetch leaderboard data
-        const userLeaderBoardArray = await axios.get('http://34.239.2.148/premium/showLeaderBoard', {
+        const userLeaderBoardArray = await axios.get('http://34.239.2.148:3000/premium/showLeaderBoard', {
             headers: { "Authorization": token }
         });
 

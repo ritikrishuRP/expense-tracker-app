@@ -25,7 +25,7 @@ const forgotpassword = async (req,res) => {
             from: 'rrishu212@gmail.com',
             subject: 'Expense Tracker ForgotPassword',
             text: 'You will click on the link below to reset password',
-            html: `<a href="http://34.239.2.148//password/resetpassword/${id}">Reset password</a>`,
+            html: `<a href="//password/resetpassword/${id}">Reset password</a>`,
         }
 
         sgMail

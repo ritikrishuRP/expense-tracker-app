@@ -15,7 +15,7 @@ document.getElementById('forgot-password-form').addEventListener('submit', funct
     // Log the data being sent
     console.log('Sending forgot password request for email:', forgotEmail);
 
-    axios.post('http://34.239.2.148/password/forgotpassword', { email: forgotEmail })
+    axios.post('http://34.239.2.148:3000/password/forgotpassword', { email: forgotEmail })
     .then(response => {
         console.log('Forgot password response received:', response.data);
         document.getElementById('forgotEmail').value = '';

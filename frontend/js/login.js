@@ -27,7 +27,7 @@ document.getElementById('login').addEventListener('submit', function(event){
     // Log the data being sent
     console.log('Sending login details:', loginDetail);
 
-    axios.post('http://34.239.2.148/api/login', loginDetail)
+    axios.post('http://34.239.2.148:3000/api/login', loginDetail)
     .then(response => {
         console.log('Login response received:', response.data); // Log the full response
         document.getElementById('email').value = '';

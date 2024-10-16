@@ -11,7 +11,7 @@ document.getElementById('signup').addEventListener('submit', function(event){
         password: password
     }
     
-    axios.post('http://34.239.2.148/api/signup', signupDetail)
+    axios.post('http://34.239.2.148:3000/api/signup', signupDetail)
     .then(response => {
         console.log('Signup Detail', response.data);
 
