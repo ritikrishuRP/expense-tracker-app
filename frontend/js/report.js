@@ -45,7 +45,7 @@ document.getElementById('daily-form').addEventListener('submit' , async(e)=>{
     const date = e.target.date.value
     try{
 
-        const res = await axios.post('http://localhost:3000/report/getdate' 
+        const res = await axios.post('http://34.239.2.148/report/getdate' 
             ,{date}
             ,{headers: { "Authorization": token }}
         )
@@ -93,7 +93,7 @@ document.getElementById('yearly-form').addEventListener('submit' , async(e)=>{
     const year = e.target['year-picker'].value
     try{
 
-        const res = await axios.post('http://localhost:3000/report/getYearly' , {year}, { headers: { "Authorization": token } } )
+        const res = await axios.post('http://34.239.2.148/report/getYearly' , {year}, { headers: { "Authorization": token } } )
         console.log(res)
         document.getElementById('daily').classList.add('hide')
         document.getElementById('monthly').classList.add('hide')
@@ -139,7 +139,7 @@ document.getElementById('monthly-form').addEventListener('submit' , async(e)=>{
     console.log(month)
     try{
 
-        const res = await axios.post('http://localhost:3000/report/getMonthly' , {month}, { headers: { "Authorization": token } } )
+        const res = await axios.post('http://34.239.2.148/report/getMonthly' , {month}, { headers: { "Authorization": token } } )
         console.log(res)
         document.getElementById('daily').classList.add('hide')
         document.getElementById('monthly').classList.remove('hide')
@@ -180,7 +180,7 @@ async function displayWeekly(){
     const token = localStorage.getItem('token');
     try{
 
-        const res = await axios.post('http://localhost:3000/report/getweekly', { headers: { "Authorization": token } })
+        const res = await axios.post('http://34.239.2.148/report/getweekly', { headers: { "Authorization": token } })
         console.log(res)
         document.getElementById('daily').classList.add('hide')
         document.getElementById('monthly').classList.add('hide')
@@ -215,3 +215,38 @@ async function displayWeekly(){
         console.log(e)
     }
 }
+
+document.addEventListener('DOMContentLoaded', async function() {
+    // Check if the user is premium
+    const token = localStorage.getItem('token');
+
+    // Parse the JWT to get the user's information
+    const decodedToken = parseJwt(token); // Make sure this function is available here
+
+    // Determine if the user is a premium member
+    const isPremium = decodedToken.ispremiumUser; // Ensure this field exists in the JWT
+
+    // Show correct message based on premium status
+    const messageDiv = document.getElementById('message');
+    if (isPremium) {
+        messageDiv.innerHTML = "You are a Premium User 👑";
+        document.getElementById('rzp-button1').style.display = "none"; 
+    } else {
+        messageDiv.innerHTML = "Buy Premium for exclusive features!";
+    }
+
+    // Render the leaderboard
+    // await renderLeaderboard();
+});
+
+// Ensure the parseJwt function is defined if it's not imported from another module
+function parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+

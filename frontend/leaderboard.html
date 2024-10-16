@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navdiv">
+            <div class="logo"><a href="#">Expense Tracker</a></div>
+            <ul id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><div id="report-button"><a href="report.html">Report 👑</a></div></li>
+                <li><button id="showLeaderboardBtn">Show Leaderboard 👑</button></li>
+
+                <li><button id="rzp-button1">Buy Premium</button></li>
+                <div id="message"></div>
+                <li><button><a href="#">LogOut</a></button></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                &#9776; <!-- This is the hamburger icon (three horizontal lines) -->
+            </div>
+        </div>
+    </nav>
+    <ul id="leaderboard" class="leaderboard"></ul>
+    <script src="./js/leaderboard.js"></script> <!-- Move the leaderboard logic here -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+</html>

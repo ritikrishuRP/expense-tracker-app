@@ -1,216 +1,589 @@
-/* Base styles for navbar */
+/* General Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+}
+
+/* Navbar styling */
 .navbar {
-    background-color: #D2B48C; /* Light brown */
+    background: #35424a;
+    color: #ffffff;
     padding: 10px 20px;
 }
 
+/* Flex container for navbar items */
 .navdiv {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
 }
 
+/* Logo styling */
 .logo a {
-    text-decoration: none;
     font-size: 24px;
-    font-weight: bold;
-    color: #333;
+    color: #ffffff;
+    text-decoration: none;
 }
 
-ul {
+/* Navigation links styling */
+#nav-links {
     list-style-type: none;
     display: flex;
-    margin: 0;
-    padding: 0;
-    align-items: center;
+    align-items: center; /* Center align items vertically */
+    gap: 15px; /* Space between nav items */
 }
 
-ul li {
-    margin-right: 20px;
+#nav-links li {
+    display: inline;
 }
 
-ul li a {
+/* Common styles for nav links and buttons */
+#nav-links a,
+#nav-links button {
+    color: #ffffff;
     text-decoration: none;
-    color: #333;
-    font-size: 16px;
-}
-
-/* Style for buttons */
-#report-button,
-button a {
-    text-decoration: none;
-    color: #fff;
-    background-color: #333;
-    padding: 10px 15px;
+    padding: 8px 16px;
     border: none;
-    border-radius: 5px;
+    background: transparent;
     cursor: pointer;
-    font-size: 14px;
-    text-align: center;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
-button {
-    background: none;
+/* Button hover effect */
+#nav-links button:hover,
+#nav-links a:hover {
+    background: #45a049; /* Green background on hover */
+    border-radius: 5px; /* Rounded corners */
+}
+
+/* Custom button (Show Leaderboard) styling */
+#showLeaderboardBtn {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 16px;
     border: none;
-    flex: 1; /* Make buttons take equal space */
+    border-radius: 5px;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-button a:hover,
-ul li a:hover {
-    color: #fff;
-    background-color: #555; /* Hover effect */
-    padding: 10px 15px;
-    border-radius: 5px;
+#showLeaderboardBtn:hover {
+    background-color: #45a049;
+}
+
+/* Message styling (You are a premium user) */
+#message {
+    margin-left: 0px; /* Space between message and previous element */
+    margin-right: 0px; 
+    color: #ffffff; /* White text for consistency */
+    font-size: 16px;
+    /* padding-right: 15px; Adjust spacing from LogOut */
+}
+
+/* Hide message initially */
+#message.hide {
+    display: none;
 }
 
 /* Hamburger icon styling */
 .hamburger {
-    display: none;
-    font-size: 30px;
+    display: none; /* Hide by default */
     cursor: pointer;
-    position: absolute;
-    right: 20px; /* Ensure it stays on the right */
+    font-size: 28px;
 }
 
-/* Media query for smaller screens */
+/* Responsive styles */
 @media (max-width: 768px) {
     .navdiv {
-        flex-direction: row;
-        justify-content: space-between;
+        flex-direction: column; /* Stack elements vertically */
+        align-items: flex-start; /* Align to the left */
     }
 
-    /* Hide navigation links on smaller screens */
-    ul {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        text-align: right;
-        margin-top: 20px;
-        background-color: #D2B48C;
-        position: absolute;
-        top: 50px;
-        right: 0;
-        padding: 20px;
+    #nav-links {
+        flex-direction: column; /* Stack nav items vertically */
+        display: none; /* Initially hide the nav links */
+        gap: 10px; /* Space between stacked items */
     }
 
-    ul li {
-        margin-bottom: 10px;
-    }
-
-    /* Display hamburger icon on smaller screens */
     .hamburger {
-        display: block;
+        display: block; /* Show hamburger icon */
     }
 
-    /* Show the links when the menu is open */
-    .navdiv.open ul {
-        display: flex;
-    }
-
-    /* Ensure buttons are full width and equal on mobile */
-    button, 
-    #report-button {
-        width: 100%; /* Full width on mobile */
-        margin-bottom: 10px;
-    }
-
-    ul li button {
-        width: 100%; /* Ensure buttons inside <li> also take full width */
-    }
-
-    /* Ensure all buttons are of equal width */
-    button a {
-        width: 100%; /* Make button content fill the button equally */
-        display: inline-block; /* Ensure it behaves like a block element */
+    .navdiv.active #nav-links {
+        display: flex; /* Show nav links when active */
     }
 }
 
-/* PART 2 */
-
-/* Ensure margin reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Form card styling */
+/* Card styling for the form */
 .card {
-    background-color: #D2B48C; /* Light brown background for card */
+    background: #ffffff;
+    border-radius: 8px;
     padding: 20px;
-    margin: 10px auto; /* Reduced margin from the top */
-    border-radius: 10px;
-    max-width: 1000px; /* Controls the max width of the form card */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+    max-width: 1000px; /* Increased width for better alignment */
+    margin: 20px auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    overflow: hidden; /* Prevent overflow issues */
 }
 
-/* Form layout to place elements in one line */
-#addExpense {
+/* Flexbox layout for form to ensure everything is on one line */
+form {
     display: flex;
-    justify-content: space-between; /* Space between the form elements */
-    align-items: center; /* Vertically align form elements */
-    flex-wrap: wrap; /* Allow wrapping if the screen gets too small */
+    align-items: center; /* Align all items vertically in the center */
+    justify-content: flex-start; /* Align items to the start of the form */
+    gap: 15px; /* Spacing between elements */
+    flex-wrap: nowrap; /* Ensure no wrapping occurs */
 }
 
-/* Label styles */
-#addExpense label {
-    color: #000; /* Dark black for labels */
+/* Label styling */
+form label {
+    flex: 0 0 auto;
+    min-width: 80px; /* Keep labels compact */
+    margin-right: 5px; /* Small space between label and input */
+    text-align: right; /* Align labels to the right */
+}
+
+/* Input fields and select */
+form input,
+form select {
+    flex: 1 1 auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 150px; /* Set a fixed width for inputs */
+    max-width: 200px; /* Prevent inputs from growing too large */
+}
+
+/* Button styling */
+form button {
+    background: #35424a;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex-shrink: 0; /* Prevent button from shrinking */
+    height: 40px; /* Ensure consistent height with input fields */
+}
+
+form button:hover {
+    background: #45a049; /* Green background on hover */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    form {
+        flex-wrap: wrap; /* Allow wrapping of form elements */
+    }
+
+    /* Make each form element take up full width on small screens */
+    form label {
+        width: 100%; /* Labels take full width */
+        text-align: left; /* Align text to the left on smaller screens */
+    }
+
+    form input,
+    form select {
+        width: 100%; /* Inputs take full width */
+        max-width: 100%; /* Ensure no extra space on small screens */
+    }
+
+    form button {
+        width: 100%; /* Make the button full width */
+        margin-top: 10px; /* Add margin to separate from the form fields */
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 15px;
+    }
+    
+    form {
+        gap: 10px; /* Reduce gap between elements */
+    }
+
+    form label {
+        font-size: 14px; /* Smaller label font size */
+    }
+
+    form input,
+    form select {
+        padding: 8px; /* Reduce input padding */
+    }
+
+    form button {
+        padding: 10px; /* Keep consistent padding */
+    }
+}
+
+
+/* Responsive Text */
+h1 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Pagination controls */
+#pagination-controls {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Hide class */
+.hide {
+    display: none;
+}
+
+/* Styling for the expense list container */
+.expense-list {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0;
+    margin: 20px 0;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 1000px; /* Same width as the card */
+    margin: 20px auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Grid container for the headings and list items */
+.expense-list-header, .expense-list-item {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr; /* Create columns for Amount, Description, Category, and Actions */
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc; /* Add a line between items */
+    align-items: center;
+}
+
+.expense-list-header {
+    font-weight: bold;
+    background-color: #35424a; /* Dark background for the header */
+    color: #ffffff; /* White text color for contrast */
+    border-bottom: 2px solid #ccc; /* Thicker line under header */
+    padding: 10px 0; /* Padding for the header for better spacing */
+}
+
+/* Expense list items */
+.expense-list-item {
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.expense-list-item button {
+    margin-left: auto; /* Push button to the far right */
+    background: #ff4d4d; /* Red delete button */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.expense-list-item button:hover {
+    background: #ff6666; /* Lighter red on hover */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .expense-list-header, .expense-list-item {
+        grid-template-columns: 1fr; /* Stack columns vertically on smaller screens */
+        text-align: left;
+    }
+}
+
+.expense-list-header div:last-child {
+    margin-right: 20px; /* Add right margin to the Action header */
+}
+/* Add this to improve the alignment of the Amount header */
+.expense-list-header div:nth-child(1) {
+    padding-left: 20px; /* Add left padding to the Amount header */
+}
+
+/* Upcoming Expense List */
+
+.leaderboard {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 80%; /* Set width to 100% */
+    max-width: none; /* Remove max width restriction */
+    margin: 20px auto; /* Center the sections */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Title styling for both sections */
+
+.leaderboard h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Expense list items */
+
+.leaderboard ul {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+}
+
+/* Individual expense and leaderboard items */
+
+.leaderboard li {
+    display: flex; /* Use flex for better layout */
+    justify-content: space-between; /* Space between name and amount */
+    align-items: center; /* Center items vertically */
+    padding: 10px;
+    border-bottom: 1px solid #ccc; /* Divider line */
+    margin-bottom: 10px; /* Add margin between items */
+    background-color: #f9f9f9; /* Light background color for shading */
+    border-radius: 5px; /* Rounded corners for list items */
+}
+
+
+.leaderboard li:last-child {
+    border-bottom: none; /* Remove last item's border */
+}
+
+/* Expense amount and points styling */
+
+.leaderboard-points {
+    font-weight: bold; /* Make amounts bold */
+}
+
+/* Delete button styling */
+.delete-button {
+    background-color: #e74c3c; /* Red background for delete button */
+    color: #ffffff; /* White text */
+    padding: 5px 10px; /* Padding for the button */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+.delete-button:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}
+
+/* Responsive styling for lists */
+@media (max-width: 768px) {
+    .navdiv {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: flex-start; /* Align to the left */
+    }
+
+    #nav-links {
+        flex-direction: column; /* Stack nav items vertically */
+        display: none; /* Initially hide the nav links */
+    }
+
+    .hamburger {
+        display: block; /* Show hamburger icon */
+    }
+
+    .navdiv.active #nav-links {
+        display: flex; /* Show nav links when active */
+    }
+
+    .expense-list,
+    .leaderboard {
+        max-width: 90%; /* Allow for more width on small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .logo a {
+        font-size: 20px; /* Reduce logo font size */
+    }
+
+    form input,
+    form select {
+        font-size: 14px; /* Reduce font size in inputs/selects */
+    }
+
+    form button {
+        font-size: 14px; /* Reduce button font size */
+    }
+}
+
+.leaderboard-item {
+    list-style: none;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    align-items: center; /* Align badge and text vertically */
+    justify-content: space-between; /* Space between name and expense */
+    gap: 10px; /* Space between badge and name */
+}
+
+/* Flex container for the badge and user info */
+.leaderboard-badge-name {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the badge and user name */
+}
+
+/* Style for the user name */
+.user-name {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+/* Style for the total expenses */
+.user-expenses {
+    color: #e74c3c;
+    margin-left: auto; /* Push the expenses to the far right */
+}
+
+/* Specific styles for top rankings (gold, silver, bronze remain the same) */
+
+/* Gold (1st place) */
+.gold {
+    background-color: #ffd700; /* Gold */
+    border-color: #e0c400;
+}
+
+/* Silver (2nd place) */
+.silver {
+    background-color: #c0c0c0; /* Silver */
+    border-color: #a9a9a9;
+}
+
+/* Bronze (3rd place) */
+.bronze {
+    background-color: #cd7f32; /* Bronze */
+    border-color: #b87333;
+}
+
+/* Fourth place */
+.fourth {
+    background-color: #d3d3d3; /* Light gray for fourth */
+    border-color: #ccc;
+}
+
+/* Fifth place */
+.fifth {
+    background-color: #deb887; /* Light brown for fifth */
+    border-color: #d2b48c;
+}
+
+/* Style for the premium badge */
+.premium-badge {
+    background-color: gold;
+    color: white;
+    font-size: 0.8em;
+    padding: 4px 8px;
+    border-radius: 5px;
     font-weight: bold;
     margin-right: 10px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
-/* Input and select styles */
-#addExpense input, #addExpense select {
-    padding: 8px 10px;
-    margin-right: 15px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 150px; /* Sets a fixed width for input and select fields */
+/* Container for download URLs */
+/* Container for Download URLs */
+/* #download-urls {
+    margin: 20px auto; /* Center the card horizontally */
+    /* padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px; /* Adjust this value to match other cards */
+    /* width: 100%; /* Make it responsive */
+    /* box-sizing: border-box; /* Center the text and table inside */
+/* } */ */ */ */ */
+
+/* Hide by default */
+.hide {
+    display: none;
 }
 
-/* Reduced width for Add Expense button */
-#addExpense button {
+/* Header for the download section */
+#download-urls h3 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Style the table */
+#download-urls table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    table-layout: fixed; /* Ensures consistent column widths */
+}
+
+/* Table headers */
+#download-urls th {
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+    word-wrap: break-word; /* Handle long text */
+}
+
+/* Table data cells */
+#download-urls td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    word-wrap: break-word; /* Handle long URLs */
+}
+
+/* Alternate row colors for better readability */
+#download-urls tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Download button */
+#downloadexpense {
+    display: block;
+    margin: 0 auto;
     padding: 10px 20px;
-    background-color: #8B4513; /* Dark brown for the button */
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 14px;
-    width: 120px; /* Set a reduced width for the button */
-    text-align: center; /* Ensure text is centered */
+    font-size: 1em;
+    transition: background-color 0.3s ease;
 }
 
-#addExpense button:hover {
-    background-color: #A0522D; /* Slightly lighter brown on hover */
+#downloadexpense:hover {
+    background-color: #218838;
 }
 
-/* Adjust margin from the navbar */
-.card {
-    margin-top: 50px; /* Reduced margin from navbar */
+/* Disabled Button Styles */
+.disabled-button {
+    background-color: #ccc; /* Gray background */
+    color: #666;            /* Dark gray text */
+    cursor: not-allowed;    /* Change cursor to indicate non-clickable */
+    opacity: 0.6;           /* Slight transparency */
+    transition: background-color 0.3s ease, opacity 0.3s ease;
 }
 
-/* Responsive handling */
-@media (max-width: 768px) {
-    #addExpense {
-        flex-direction: column; /* Stack form elements vertically on smaller screens */
-        align-items: flex-start;
-    }
-
-    #addExpense input, #addExpense select {
-        width: 100%; /* Make inputs and selects full width on mobile */
-        margin-bottom: 15px;
-    }
-
-    #addExpense button {
-        width: 100%; /* Full width button on mobile */
-        margin-top: 10px;
-    }
+.disabled-button:hover {
+    background-color: #ccc; /* Maintain gray background on hover */
+    opacity: 0.6;           /* Maintain opacity on hover */
 }
+
+

@@ -28,7 +28,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(helmet());
+//app.use(helmet());
+//app.use(express.static('public'));
+
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname , 'access.log'),{flags : 'a'})
 
@@ -59,7 +61,7 @@ app.get('/login', (req,res) => {
   res.sendFile(path.join(__dirname, '..', 'frontend', 'login.html'));
 })
 
-console.log(process.env.DB_HOST);
+//console.log(process.env.DB_HOST);
 
 User.hasMany(Expense, { foreignKey: 'userId' });
 Expense.belongsTo(User, { foreignKey: 'userId' });

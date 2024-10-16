@@ -13,9 +13,9 @@
             <div class="logo"><a href="#">Expense Tracker</a></div>
             <ul id="nav-links">
                 <li><a href="#">Home</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">About</a></li>
-                <li><button id="report-button">Report</button></li>
+                <li><button id="report-button">Report 👑</button></li>
+                <li><div id="showLeaderboardBtn"><a href="leaderboard.html">Show Leaderboard 👑</a></div></li>
+
                 <li><button id="rzp-button1">Buy Premium</button></li>
                 <div id="message"></div>
                 <li><button><a href="#">LogOut</a></button></li>
@@ -49,7 +49,6 @@
     
     <!-- <div id="message"></div>
     <button id="rzp-button1">Buy Premium</button> -->
-    <button onclick="download()" id="downloadexpense">Download File</button>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <div>
         <label for="page-size">Select Page Size:</label>
@@ -60,22 +59,36 @@
             <option value="16">16</option>
         </select>
     </div>
+    <h1>Expenses</h1>
+    <ul id="listOfExpense" class="expense-list">
+        <li class="expense-list-header">
+            <div>Amount</div>
+            <div>Description</div>
+            <div>Category</div>
+            <div>Actions</div>
+        </li>
+    </ul>
     <div id="pagination-controls">
         <button id="prev-page" disabled>Previous</button>
         <span id="current-page">Page: 1</span>
         <button id="next-page">Next</button>
     </div>
-    <h1>Expenses</h1>
-    <ul id="listOfExpense"> 
-    </ul>
-    <ul id="leaderboard">    
-    </ul>
-    <div class="hide" id="download-urls">
-        <h3>Click here to download previous reports</h3>
-        <ul>
-
-        </ul>
-    </div>
+<!-- Download URLs Section -->
+<div id="download-urls" class="card">
+    <h3 onclick="toggleDownloadUrls()" style="cursor: pointer;">Download Expenses</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Download Date</th>
+                <th>Download URL</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table rows will be dynamically populated here -->
+        </tbody>
+    </table>
+    <button onclick="download()" id="downloadexpense">Download Latest File</button>
+</div>
     <script src="./js/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>

@@ -8,10 +8,10 @@ const getUserLeaderBoard = async (req,res) => {
             order:[['totalExpenses', 'DESC']]
         })
         
-        // const userAggregatedExpenses = await Expense.findAll({
-        //     attributes: ['userId',[sequelize.fn('sum',sequelize.col('expense')), 'total_cost']],
-        //     group: ['userId']
-        // });
+        const userAggregatedExpenses = await Expense.findAll({
+            attributes: ['userId',[sequelize.fn('sum',sequelize.col('expense')), 'total_cost']],
+            group: ['userId']
+        });
 
         res.status(200).json(leaderboardofusers);
     } catch (error) {
