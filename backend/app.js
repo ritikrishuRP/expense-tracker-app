@@ -31,6 +31,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(helmet());
 app.use(express.static('public'));
 
+app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", "form-action 'self' http://34.239.2.148:3000");
+  next();
+});
+
 const accessLogStream = fs.createWriteStream(path.join(__dirname , 'access.log'), { flags: 'a' });
 app.use(morgan('combined', { stream: accessLogStream }));
 
