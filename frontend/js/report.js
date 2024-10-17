@@ -61,23 +61,26 @@ document.getElementById('daily-form').addEventListener('submit' , async(e)=>{
         let total =0
         tbody.innerHTML = ``
         document.querySelector('#daily h3 span').textContent = date
-        res.data.forEach(elem => {
-            console.log(elem)
-            const tr = document.createElement('tr')
-            const td1 = document.createElement('td')
-            const td2 = document.createElement('td')
-
-            td1.textContent = elem.description
-            td2.textContent = elem.expense
-
-            total = total + +elem.expense
-            tr.appendChild(td1)
-            tr.appendChild(td2)
-
-            tbody.appendChild(tr)
-
-        })
-
+        if (res.data && Array.isArray(res.data.data) && res.data.data.length > 0) {
+            res.data.data.forEach(elem => {
+                console.log(elem);
+                const tr = document.createElement('tr');
+                const td1 = document.createElement('td');
+                const td2 = document.createElement('td');
+    
+                td1.textContent = elem.description;
+                td2.textContent = elem.expense;
+    
+                total = total + +elem.expense;
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+    
+                tbody.appendChild(tr);
+            });
+        } else {
+            console.error('Expected array but got:', res.data);
+            alert("No data available for the selected date.");
+        }
         document.getElementById('daily-total').textContent = total
     }catch(e){
         console.log(e)
@@ -250,3 +253,13 @@ function parseJwt(token) {
     return JSON.parse(jsonPayload);
 }
 
+document.getElementById('logoutBtn').addEventListener('click', function() {
+    // Remove token from localStorage (or sessionStorage if you are using that)
+    localStorage.removeItem('token');
+
+    // Optionally, clear other user-related data if stored
+    // localStorage.removeItem('userDetails');
+
+    // Redirect to login page
+    window.location.href = '/login'; // Adjust this path to your actual login page
+});

@@ -9,12 +9,12 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: #f4f4f4;
+    background-color: #dbeef7;
 }
 
 /* Navbar styling */
 .navbar {
-    background: #35424a;
+    background: #1b5e87;
     color: #ffffff;
     padding: 10px 20px;
 }
@@ -60,7 +60,7 @@ body {
 /* Button hover effect */
 #nav-links button:hover,
 #nav-links a:hover {
-    background: #45a049; /* Green background on hover */
+    background: #10272b; /* Green background on hover */
     border-radius: 5px; /* Rounded corners */
 }
 
@@ -77,7 +77,7 @@ body {
 }
 
 #showLeaderboardBtn:hover {
-    background-color: #45a049;
+    background-color: #10272b;
 }
 
 /* Message styling (You are a premium user) */
@@ -125,7 +125,7 @@ body {
 
 /* Card styling for the form */
 .card {
-    background: #ffffff;
+    background: #4ed1eb;
     border-radius: 8px;
     padding: 20px;
     max-width: 1000px; /* Increased width for better alignment */
@@ -166,7 +166,7 @@ form select {
 
 /* Button styling */
 form button {
-    background: #35424a;
+    background: #467fa2;
     color: #ffffff;
     padding: 10px 20px;
     border: none;
@@ -177,7 +177,7 @@ form button {
 }
 
 form button:hover {
-    background: #45a049; /* Green background on hover */
+    background: #10272b; /* Green background on hover */
 }
 
 /* Responsive adjustments for smaller screens */
@@ -250,7 +250,7 @@ h1 {
     list-style-type: none; /* Remove default list styling */
     padding: 0;
     margin: 20px 0;
-    background: #ffffff;
+    background: #62c0eb;
     border-radius: 8px;
     padding: 20px;
     max-width: 1000px; /* Same width as the card */
@@ -263,13 +263,13 @@ h1 {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr 1fr; /* Create columns for Amount, Description, Category, and Actions */
     padding: 10px 0;
-    border-bottom: 1px solid #ccc; /* Add a line between items */
+    border-bottom: 1px solid #040a0c; /* Add a line between items */
     align-items: center;
 }
 
 .expense-list-header {
     font-weight: bold;
-    background-color: #35424a; /* Dark background for the header */
+    background-color: #1c5c7a; /* Dark background for the header */
     color: #ffffff; /* White text color for contrast */
     border-bottom: 2px solid #ccc; /* Thicker line under header */
     padding: 10px 0; /* Padding for the header for better spacing */
@@ -277,14 +277,14 @@ h1 {
 
 /* Expense list items */
 .expense-list-item {
-    background-color: #f9f9f9;
+    background-color: #78caca;
     border-radius: 4px;
     padding: 10px;
 }
 
 .expense-list-item button {
     margin-left: auto; /* Push button to the far right */
-    background: #ff4d4d; /* Red delete button */
+    background: #1b97cd; /* Red delete button */
     color: white;
     border: none;
     padding: 5px 10px;
@@ -293,7 +293,7 @@ h1 {
 }
 
 .expense-list-item button:hover {
-    background: #ff6666; /* Lighter red on hover */
+    background: #10272b; /* Lighter red on hover */
 }
 
 /* Responsive adjustments for smaller screens */
@@ -315,7 +315,7 @@ h1 {
 /* Upcoming Expense List */
 
 .leaderboard {
-    background: #ffffff;
+    background: #60cdef;
     border-radius: 8px;
     padding: 20px;
     width: 80%; /* Set width to 100% */
@@ -346,9 +346,9 @@ h1 {
     justify-content: space-between; /* Space between name and amount */
     align-items: center; /* Center items vertically */
     padding: 10px;
-    border-bottom: 1px solid #ccc; /* Divider line */
+    border-bottom: 1px solid #0f4854; /* Divider line */
     margin-bottom: 10px; /* Add margin between items */
-    background-color: #f9f9f9; /* Light background color for shading */
+    background-color: #3b8fae; /* Light background color for shading */
     border-radius: 5px; /* Rounded corners for list items */
 }
 
@@ -365,7 +365,7 @@ h1 {
 
 /* Delete button styling */
 .delete-button {
-    background-color: #e74c3c; /* Red background for delete button */
+    background-color: #125d76; /* Red background for delete button */
     color: #ffffff; /* White text */
     padding: 5px 10px; /* Padding for the button */
     border: none; /* Remove border */
@@ -423,7 +423,7 @@ h1 {
     list-style: none;
     padding: 10px;
     margin: 5px 0;
-    background-color: #f9f9f9;
+    background-color: #80c8df;
     border: 1px solid #ddd;
     border-radius: 5px;
     display: flex;
@@ -442,12 +442,12 @@ h1 {
 /* Style for the user name */
 .user-name {
     font-weight: bold;
-    color: #2c3e50;
+    color: #eef2f5;
 }
 
 /* Style for the total expenses */
 .user-expenses {
-    color: #e74c3c;
+    color: #f0f2f4;
     margin-left: auto; /* Push the expenses to the far right */
 }
 

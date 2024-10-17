@@ -95,3 +95,14 @@ const navLinks = document.getElementById('nav-links');
 hamburger.addEventListener('click', () => {
     navLinks.classList.toggle('show'); // Toggle the 'show' class to show/hide nav links
 });
+
+document.getElementById('logoutBtn').addEventListener('click', function() {
+    // Remove token from localStorage (or sessionStorage if you are using that)
+    localStorage.removeItem('token');
+
+    // Optionally, clear other user-related data if stored
+    // localStorage.removeItem('userDetails');
+
+    // Redirect to login page
+    window.location.href = '/login'; // Adjust this path to your actual login page
+});

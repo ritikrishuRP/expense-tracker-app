@@ -12,8 +12,8 @@
 /* Apply a clean sans-serif font and base background */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f8f9fa;
-    color: #343a40;
+    background-color: #dbeef7;
+    color: #2e6c92;
     line-height: 1.6;
     padding-bottom: 60px; /* To prevent content from hiding behind the footer */
 }
@@ -21,8 +21,8 @@ body {
 /* =========================
    2. Navbar Styles
    ========================= */
-.navbar {
-    background: #35424a;
+   .navbar {
+    background: #1b5e87;
     color: #ffffff;
     padding: 10px 20px;
 }
@@ -68,7 +68,7 @@ body {
 /* Button hover effect */
 #nav-links button:hover,
 #nav-links a:hover {
-    background: #45a049; /* Green background on hover */
+    background: #10272b; /* Green background on hover */
     border-radius: 5px; /* Rounded corners */
 }
 
@@ -110,7 +110,7 @@ body {
 }
 
 #report-select form {
-    background-color: #fff;
+    background-color: #6bd9f5;
     padding: 15px 20px;
     border-radius: 6px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
@@ -120,7 +120,7 @@ body {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-    color: #495057;
+    color: #296993;
 }
 
 #report-select form input[type="date"],
@@ -161,7 +161,7 @@ body {
 #report-display h3 {
     text-align: center;
     margin-bottom: 15px;
-    color: #495057;
+    color: #0e3a67;
 }
 
 #report-display h3 span {
@@ -171,7 +171,7 @@ body {
 #report-display table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #fff;
+    background-color: #56b9e3;
     margin-bottom: 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -184,17 +184,17 @@ body {
 }
 
 #report-display table th {
-    background-color: #343a40;
+    background-color: #104c87;
     color: #fff;
 }
 
 #report-display table tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #75c5e7;
 }
 
 #report-display table tfoot tr td {
     font-weight: bold;
-    background-color: #e9ecef;
+    background-color: #bacee1;
 }
 
 /* =========================
@@ -233,7 +233,7 @@ body {
         display: none; /* Hide links initially */
         flex-direction: column; /* Stack links vertically */
         position: absolute; /* Position it for absolute control */
-        background: #35424a; /* Same background as navbar */
+        background: #1b5e87; /* Same background as navbar */
         top: 60px; /* Position below the navbar */
         width: 100%; /* Full width */
         z-index: 10; /* Above other content */

@@ -32,7 +32,7 @@ app.use(helmet());
 app.use(express.static('public'));
 
 app.use((req, res, next) => {
-  res.setHeader("Content-Security-Policy", "form-action 'self' http://34.239.2.148:3000");
+  res.setHeader("Content-Security-Policy", "form-action 'self' http://localhost:3000");
   next();
 });
 

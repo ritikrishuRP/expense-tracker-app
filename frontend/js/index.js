@@ -361,50 +361,20 @@ function fetchDownloadUrls() {
 // Call fetchDownloadUrls when the page loads
 window.addEventListener('DOMContentLoaded', fetchDownloadUrls);
 
-// Function to restrict access for non-premium users
-function checkPremiumStatus() {
-    const token = localStorage.getItem('token');
-    const decodeToken = parseJwt(token);
-    const isPremiumUser = decodeToken.ispremiumUser;
-
-    // Elements for report and leaderboard
-    const reportButton = document.getElementById('report-button');
-    const leaderboardButton = document.getElementById('showLeaderboardBtn');
-
-    if (!isPremiumUser) {
-        // Disable buttons for non-premium users
-        reportButton.disabled = true;
-        leaderboardButton.disabled = true;
-
-        // Prevent default action and show alert for report button
-        reportButton.addEventListener('click', (event) => {
-            event.preventDefault();
-            alert('Buy Premium to access this feature!');
-        });
-
-        // Prevent default action and show alert for leaderboard button
-        leaderboardButton.addEventListener('click', (event) => {
-            event.preventDefault(); // Stop the default action
-            alert('Buy Premium to access this feature!');
-        });
-
-        // Prevent default action on the <a> tag inside leaderboard button
-        const leaderboardLink = leaderboardButton.querySelector('a');
-        if (leaderboardLink) {
-            leaderboardLink.addEventListener('click', (event) => {
-                event.preventDefault();
-                alert('Buy Premium to access this feature!');
-            });
-        }
-    }
-}
-
-
-
-
 // Call checkPremiumStatus when the DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
-    checkPremiumStatus();
     fetchExpenses();  // This function will already check and update premium status in the UI
 });
+
+document.getElementById('logoutBtn').addEventListener('click', function() {
+    // Remove token from localStorage (or sessionStorage if you are using that)
+    localStorage.removeItem('token');
+
+    // Optionally, clear other user-related data if stored
+    // localStorage.removeItem('userDetails');
+
+    // Redirect to login page
+    window.location.href = '/login'; // Adjust this path to your actual login page
+});
+
 

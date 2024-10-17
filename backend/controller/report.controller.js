@@ -1,17 +1,37 @@
-const {Op, literal, fn} = require('sequelize')
+const { Op, fn, col } = require('sequelize');
+const sequelize = require('../util/database'); // Adjust this import if needed
+const User = require('../model/user.model'); // Import your User model if needed
 
 const getDailyReport = async (req, res) => {
     try {
         if (req.user.ispremiumUser) {
-            const date = req.body.date; // Expected format: 'YYYY-MM-DD'
+            // Hardcoded date for testing
+            const date = '2024-10-15'; // Change this to the date you are testing
+            console.log('Testing date:', date);
+            
+            // Convert date to start and end of the day
+            const startDate = new Date(date + 'T00:00:00Z'); // Adjust for UTC
+            const endDate = new Date(date + 'T23:59:59Z'); // Adjust for UTC
+            
+            console.log('Start Date:', startDate);
+            console.log('End Date:', endDate);
 
             // Fetch expenses for the specified date
             const data = await req.user.getExpenses({
-                where: { createdAt: date },
-                attributes: ['description', 'expense', 'createdAt'], // Specify required fields
+                where: {
+                    createdAt: {
+                        [Op.gte]: startDate,
+                        [Op.lte]: endDate // Change to lte to include end of the day
+                    }
+                },
+                attributes: ['description', 'expense', 'createdAt']
             });
 
-            return res.json(data);
+            if (data.length === 0) {
+                console.log('No expenses found for the selected date.');
+            }
+
+            return res.json({ success: true, data });
         } else {
             return res.status(403).json({ success: false, msg: "You are not a premium user" });
         }
@@ -24,26 +44,26 @@ const getDailyReport = async (req, res) => {
 const getWeeklyReport = async (req, res) => {
     try {
         if (req.user.ispremiumUser) {
-            const currentDate = new Date();
-            const pastDate = new Date();
-            pastDate.setDate(currentDate.getDate() - 7); // 7 days ago
+            const today = new Date();
+            const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay())); // Sunday
+            const endOfWeek = new Date(today.setDate(startOfWeek.getDate() + 6)); // Saturday
 
-            // Fetch expenses grouped by day name
-            const result = await req.user.getExpenses({
-                attributes: [
-                    [fn('DAYNAME', literal('createdAt')), 'day'],
-                    [fn('SUM', literal('expense')), 'totalAmount']
-                ],
+            console.log('Start of Week:', startOfWeek);
+            console.log('End of Week:', endOfWeek);
+
+            // Fetch expenses for the week
+            const expenses = await req.user.getExpenses({
                 where: {
                     createdAt: {
-                        [Op.gt]: pastDate
+                        [Op.gte]: startOfWeek,
+                        [Op.lte]: endOfWeek
                     }
                 },
-                group: [fn('DAYNAME', literal('createdAt'))],
-                raw: true, // Returns plain objects
+                attributes: ['description', 'expense', 'createdAt']
             });
 
-            return res.json(result);
+            // Return expenses directly
+            return res.json({ success: true, data: expenses }); // Ensure this is an array
         } else {
             return res.status(403).json({ success: false, msg: "You are not a premium user" });
         }
@@ -53,74 +73,94 @@ const getWeeklyReport = async (req, res) => {
     }
 };
 
+
+
+// Helper function to format the weekly report remains the same
+
+
+// Helper function to format the weekly report
+
+
 const getMonthlyReport = async (req, res) => {
     try {
         if (req.user.ispremiumUser) {
+            const { month } = req.body; // Expected format: 'YYYY-MM'
 
+            if (!month) {
+                return res.status(400).json({ success: false, msg: "Month is required" });
+            }
 
-            const month = req.body.month;
-            const startDate = new Date(month);
-            const endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
+            const [year, monthNum] = month.split('-');
+            const startDate = new Date(year, monthNum - 1, 1);
+            const endDate = new Date(year, monthNum, 1);
+
+            // Fetch expenses grouped by date
             const result = await req.user.getExpenses({
-                attributes : [
-                    [fn('DATE' , literal('createdAt')) , 'date'],
-                    [literal('SUM(expense)') , 'totalAmount']
+                attributes: [
+                    [fn('DATE', col('createdAt')), 'date'],
+                    [fn('SUM', col('expense')), 'totalAmount']
                 ],
                 where: {
                     createdAt: {
                         [Op.gte]: startDate,
                         [Op.lt]: endDate
-
                     }
                 },
-                group: [fn('DATE' , literal('createdAt'))]
-            })
-            return res.json(result)
+                group: [fn('DATE', col('createdAt'))],
+                raw: true
+            });
+
+            return res.json(result);
         } else {
-            return res.status(403).json({ success: false, msg: "you are not a premium user" })
+            return res.status(403).json({ success: false, msg: "You are not a premium user" });
         }
-    } catch (e) {
-        console.log(e)
-        return res.status(500).json({ success: false, msg: "Internal server error" })
+    } catch (error) {
+        console.error('Error fetching monthly report:', error);
+        return res.status(500).json({ success: false, msg: "Internal server error" });
     }
-}
+};
 
 const getYearlyReport = async (req, res) => {
     try {
         if (req.user.ispremiumUser) {
+            const { year } = req.body; // Expected format: 'YYYY'
 
+            if (!year) {
+                return res.status(400).json({ success: false, msg: "Year is required" });
+            }
 
-            const year = req.body.year;
-            const startYear = new Date(year)
-            const endYear = new Date(startYear.getFullYear() + 1, 0, 1)
+            const startYear = new Date(year, 0, 1);
+            const endYear = new Date(parseInt(year) + 1, 0, 1);
+
+            // Fetch expenses grouped by month name
             const result = await req.user.getExpenses({
                 attributes: [
-                    [fn('MONTHNAME',literal('createdAt')), 'month'],
-                    [literal('SUM(expense)'), 'totalAmount'],
+                    [fn('MONTHNAME', col('createdAt')), 'month'],
+                    [fn('SUM', col('expense')), 'totalAmount']
                 ],
                 where: {
                     createdAt: {
                         [Op.gte]: startYear,
-                        [Op.lt]: endYear,
-                    },
+                        [Op.lt]: endYear
+                    }
                 },
-                group: [fn('MONTHNAME',literal('createdAt'))],
-                raw: true,
+                group: [fn('MONTHNAME', col('createdAt'))],
+                raw: true
             });
-            return res.json(result)
+
+            return res.json(result);
         } else {
-            return res.status(403).json({ success: false, msg: "you are not a premium user" })
+            return res.status(403).json({ success: false, msg: "You are not a premium user" });
         }
-    } catch (e) {
-        console.log(e)
-        return res.status(500).json({ success: false, msg: "Internal server error" })
+    } catch (error) {
+        console.error('Error fetching yearly report:', error);
+        return res.status(500).json({ success: false, msg: "Internal server error" });
     }
-}
+};
 
 module.exports = {
     getDailyReport,
     getMonthlyReport,
     getWeeklyReport,
     getYearlyReport
-}
-
+};
