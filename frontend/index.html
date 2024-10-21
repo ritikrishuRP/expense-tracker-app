@@ -22,7 +22,7 @@
 
             </ul>
             <div class="hamburger" id="hamburger">
-                &#9776; <!-- This is the hamburger icon (three horizontal lines) -->
+                &#9776; 
             </div>
         </div>
     </nav>
@@ -48,8 +48,7 @@
         </form>
     </div>
     
-    <!-- <div id="message"></div>
-    <button id="rzp-button1">Buy Premium</button> -->
+   
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <div>
         <label for="page-size">Select Page Size:</label>
@@ -63,6 +62,7 @@
     <h1>Expenses</h1>
     <ul id="listOfExpense" class="expense-list">
         <li class="expense-list-header">
+            <div>Date</div>
             <div>Amount</div>
             <div>Description</div>
             <div>Category</div>
@@ -85,7 +85,7 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Table rows will be dynamically populated here -->
+            
         </tbody>
     </table>
     <button onclick="download()" id="downloadexpense">Download Latest File</button>

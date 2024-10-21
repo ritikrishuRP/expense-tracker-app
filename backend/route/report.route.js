@@ -11,7 +11,7 @@ router.post('/getdate', authenticatedmiddleware.authenticate, reportController.g
 
 router.post('/getYearly', authenticatedmiddleware.authenticate, reportController.getYearlyReport);
 
-router.post('getMonthly', authenticatedmiddleware.authenticate, reportController.getMonthlyReport);
+router.post('/getMonthly', authenticatedmiddleware.authenticate, reportController.getMonthlyReport);
 
 
 router.post('/getweekly', authenticatedmiddleware.authenticate, reportController.getWeeklyReport);

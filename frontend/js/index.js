@@ -1,6 +1,7 @@
-// document.addEventListener('DOMContentLoaded', function () {
-//     fetchExpenses();
-// });
+document.addEventListener('DOMContentLoaded', function () {
+    fetchExpenses();  
+    fetchDownloadUrls();
+});
 
 document.getElementById('addExpense').addEventListener('submit', function (event) {
     event.preventDefault();
@@ -18,11 +19,11 @@ document.getElementById('addExpense').addEventListener('submit', function (event
     const token = localStorage.getItem('token');
 
     console.log(expenseDetails);
-    axios.post('http://34.239.2.148:3000/expense/addExpense', expenseDetails, { headers: { "Authorization": token } })
+    axios.post('http://34.239.2.148/expense/addExpense', expenseDetails, { headers: { "Authorization": token } })
         .then((response) => {
             console.log('Expense created successfully:', response.data);
-            fetchExpenses(); // Fetch updated expenses after adding
-            renderLeaderboard(); // Update leaderboard if it's currently displayed
+            fetchExpenses();
+            renderLeaderboard(); 
         })
         .catch(err => console.log(err));
 });
@@ -57,7 +58,7 @@ function fetchExpenses() {
     } 
     limit = parseInt(document.getElementById('page-size').value, 10);
 
-    axios.get(`http://34.239.2.148:3000/expense/getExpense?page=${currentPage}&limit=${limit}`, {
+    axios.get(`http://34.239.2.148/expense/getExpense?page=${currentPage}&limit=${limit}`, {
         headers: { "Authorization": token }
     })
     .then(function (response) {
@@ -71,7 +72,7 @@ function fetchExpenses() {
             expenses.forEach(expense => addNewExpensetoUI(expense));
         }
 
-        // Update pagination controls
+        
         updatePaginationControls(response.data);
     })
     .catch(function (error) {
@@ -80,8 +81,8 @@ function fetchExpenses() {
 }
 
 document.getElementById('page-size').addEventListener('change', function() {
-    currentPage = 1; // Reset to the first page when page size changes
-    fetchExpenses(); // Fetch expenses with the new page size
+    currentPage = 1; 
+    fetchExpenses(); 
 });
 
 function updatePaginationControls(data) {
@@ -118,13 +119,16 @@ function updatePaginationControls(data) {
 
 function addExpenseListHeader() {
     const expenseList = document.getElementById('listOfExpense');
-    
-    // Check if the header already exists
+
+    // Check if the header is already present
     if (!document.querySelector('.expense-list-header')) {
         const header = document.createElement('li');
-        header.className = 'expense-list-header'; // Add the header class
+        header.className = 'expense-list-header'; 
 
-        // Create header columns
+        // Create the new Date header
+        const dateHeader = document.createElement('div');
+        dateHeader.textContent = 'Date'; // New Date Header
+
         const amountHeader = document.createElement('div');
         amountHeader.textContent = 'Amount';
         const descriptionHeader = document.createElement('div');
@@ -134,26 +138,31 @@ function addExpenseListHeader() {
         const actionHeader = document.createElement('div');
         actionHeader.textContent = 'Actions';
 
-        // Append header columns to header row
+        // Append headers in the correct order
+        header.appendChild(dateHeader); // Append the Date header first
         header.appendChild(amountHeader);
         header.appendChild(descriptionHeader);
         header.appendChild(categoryHeader);
         header.appendChild(actionHeader);
 
-        // Add header row to the expense list
+        // Insert the header at the beginning of the expense list
         expenseList.insertBefore(header, expenseList.firstChild);
     }
 }
 
-function addNewExpensetoUI(expense) {
-    addExpenseListHeader(); // Ensure the header is added before new expenses
 
+function addNewExpensetoUI(expense) {
+    addExpenseListHeader(); 
     const expenseList = document.getElementById('listOfExpense');
 
     const li = document.createElement('li');
-    li.className = 'expense-list-item'; // Add the class to match the CSS
+    li.className = 'expense-list-item'; 
 
-    // Create grid items for each field
+    // Create and format the date
+    const expenseDate = document.createElement('div');
+    const createdAtDate = new Date(expense.createdAt); // Assuming expense has createdAt property
+    expenseDate.textContent = createdAtDate.toLocaleDateString(); // Format the date
+
     const expenseAmount = document.createElement('div');
     expenseAmount.textContent = expense.expense;
 
@@ -167,35 +176,27 @@ function addNewExpensetoUI(expense) {
     deleteBtn.textContent = 'Delete';
     deleteBtn.addEventListener('click', function () {
         const token = localStorage.getItem('token');
-        axios.delete(`http://34.239.2.148:3000/expense/deleteExpense/${expense.id}`, { headers: { "Authorization": token } })
+        axios.delete(`http://34.239.2.148/expense/deleteExpense/${expense.id}`, { headers: { "Authorization": token } })
             .then(response => {
                 console.log('Expense deleted successfully:', response.data);
                 li.remove();
-                fetchExpenses(); // Refresh the expenses list after deletion
-                renderLeaderboard(); // Update leaderboard if it's currently displayed
+                fetchExpenses(); 
+                renderLeaderboard();
             })
             .catch(err => {
                 console.error('Error deleting expense:', err);
             });
     });
 
-    // Append all elements to the list item
+    // Append the new date element before amount
+    li.appendChild(expenseDate);
     li.appendChild(expenseAmount);
     li.appendChild(expenseDescription);
     li.appendChild(expenseCategory);
     li.appendChild(deleteBtn);
 
-    // Append the list item to the expense list
     expenseList.appendChild(li);
 }
-
-
-
-
-document.getElementById('showLeaderboardBtn').onclick = function() {
-    window.location.href = 'leaderboard.html'; // Redirect to leaderboard page
-};
-
 
 
 document.getElementById('rzp-button1').onclick = async function (e) {
@@ -204,7 +205,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
 
     try {
         console.log("Fetching Razorpay order details...");
-        const response = await axios.get('http://34.239.2.148:3000/purchase/premiummembership', {
+        const response = await axios.get('http://34.239.2.148/purchase/premiummembership', {
             headers: { "Authorization": token }
         });
 
@@ -219,7 +220,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
                 try {
                     console.log("Updating transaction status...");
 
-                    const updateResponse = await axios.post('http://34.239.2.148:3000/purchase/updatetransactionstatus', {
+                    const updateResponse = await axios.post('http://34.239.2.148/purchase/updatetransactionstatus', {
                         order_id: options.order_id,
                         payment_id: paymentResponse.razorpay_payment_id,
                     }, { headers: { "Authorization": token } });
@@ -249,12 +250,7 @@ document.getElementById('rzp-button1').onclick = async function (e) {
     }
 };
 
-document.getElementById('report-button').addEventListener('click', () => {
-    window.location.href = 'report.html';
-});
 
-
-// Function to toggle the visibility of the download URLs table
 function toggleDownloadUrls() {
     const downloadSection = document.getElementById('download-urls');
     const table = downloadSection.querySelector('table');
@@ -266,18 +262,18 @@ function toggleDownloadUrls() {
     }
 }
 
-// Function to download the latest expense as a CSV file
 function download(){
     const token = localStorage.getItem('token');
-    axios.get('http://34.239.2.148:3000/api/download', { headers: {"Authorization" : token} })
+    axios.get('http://34.239.2.148/api/download', { headers: {"Authorization" : token} })
     .then((response) => {
         if(response.status === 200){
             var a = document.createElement("a");
             a.href = response.data.fileUrl;
             a.download = 'myexpense.csv';
-            document.body.appendChild(a); // Append to the DOM
+            document.body.appendChild(a); 
             a.click();
-            document.body.removeChild(a); // Remove after download
+            document.body.removeChild(a); 
+            window.location.reload(); 
         } else {
             throw new Error(response.data.message)
         }
@@ -289,26 +285,24 @@ function download(){
     });
 }
 
-/**
- * Fetches and displays the list of previous download URLs in a table.
- */
+
 function fetchDownloadUrls() {
-    const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+    const token = localStorage.getItem('token'); 
 
     if (!token) {
         console.error("No token found in localStorage.");
         return;
     }
 
-    // Fetch the download URLs from the backend
-    axios.get('http://34.239.2.148:3000/expense/urls', {
+    
+    axios.get('http://34.239.2.148/expense/urls', {
         headers: { "Authorization": token }
     })
     .then((response) => {
         if (response.status === 200 && response.data.success) {
             const downloadUrls = response.data.downloadUrls;
 
-            // Get the tbody element where download links will be added
+            
             const tableBody = document.querySelector('#download-urls table tbody');
 
             if (!tableBody) {
@@ -316,10 +310,10 @@ function fetchDownloadUrls() {
                 return;
             }
 
-            // Clear any previous content in the table
+            
             tableBody.innerHTML = '';
 
-            // Iterate through each download URL and add a table row
+            
             downloadUrls.forEach(download => {
                 const row = document.createElement('tr');
 
@@ -333,19 +327,17 @@ function fetchDownloadUrls() {
                 const link = document.createElement('a');
                 link.href = download.url;
                 link.textContent = 'Download';
-                link.target = '_blank'; // Open in new tab
-                link.rel = 'noopener noreferrer'; // Security best practices
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer'; 
                 urlCell.appendChild(link);
 
-                // Append cells to the row
                 row.appendChild(dateCell);
                 row.appendChild(urlCell);
 
-                // Append the row to the table body
+               
                 tableBody.appendChild(row);
             });
 
-            // Make the download section visible
             document.getElementById('download-urls').classList.remove('hide');
         } else {
             console.error('Failed to fetch download URLs:', response.data.message);
@@ -358,23 +350,62 @@ function fetchDownloadUrls() {
     });
 }
 
-// Call fetchDownloadUrls when the page loads
-window.addEventListener('DOMContentLoaded', fetchDownloadUrls);
+// window.addEventListener('DOMContentLoaded', fetchDownloadUrls);
 
-// Call checkPremiumStatus when the DOM is loaded
-document.addEventListener('DOMContentLoaded', function () {
-    fetchExpenses();  // This function will already check and update premium status in the UI
-});
+
 
 document.getElementById('logoutBtn').addEventListener('click', function() {
-    // Remove token from localStorage (or sessionStorage if you are using that)
     localStorage.removeItem('token');
-
-    // Optionally, clear other user-related data if stored
-    // localStorage.removeItem('userDetails');
-
-    // Redirect to login page
-    window.location.href = '/login'; // Adjust this path to your actual login page
+    window.location.href = '/login'; 
 });
 
+
+document.getElementById('report-button').addEventListener('click', function () {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        alert('You are not logged in. Please log in to continue.');
+        window.location.href = '/login'; // Redirect to login if no token is present
+        return;
+    }
+
+    const decodeToken = parseJwt(token); // Decode the JWT token
+    const isPremiumUser = decodeToken.ispremiumUser; // Check premium status
+
+    if (isPremiumUser) {
+        window.location.href = 'report.html'; // Allow access to report page
+    } else {
+        alert('You must be a premium user to access the report page.');
+        return; 
+    }
+});
+
+document.getElementById('showLeaderboardBtn').addEventListener('click', function (event) {
+    event.preventDefault(); // Prevent the default anchor behavior
+
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        alert('You are not logged in. Please log in to continue.');
+        window.location.href = '/login'; // Redirect to login if no token is present
+        return;
+    }
+
+    const decodeToken = parseJwt(token); // Decode the JWT token
+    const isPremiumUser = decodeToken.ispremiumUser; // Check premium status
+
+    if (isPremiumUser) {
+        window.location.href = 'leaderboard.html'; // Allow access to leaderboard page
+    } else {
+        alert('You must be a premium user to view the leaderboard.');
+        return; // Prevent further execution to stop redirection
+    }
+});
+
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('nav-links');
+
+hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+});
 

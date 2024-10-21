@@ -1,223 +1,122 @@
-// const axiosReportInstance = axios.create({
-//     baseURL : 'http://3.27.133.80/report',
-//     headers : {
-//         'auth-token' : localStorage.getItem('token')
-//     }
-// })
+const axiosReportInstance = axios.create({
+    baseURL: 'http://34.239.2.148/report',
+});
 
-window.addEventListener('load' , ()=>{
-    document.getElementById('date').value = new Date().toISOString().split('T')[0]
-})
+document.addEventListener('DOMContentLoaded', () => {
+    const reportTypeSelect = document.getElementById('reportType');
+    const dateInput = document.getElementById('dateInput');
+    const monthInput = document.getElementById('monthInput');
+    const yearInput = document.getElementById('yearInput');
+    const generateReportBtn = document.getElementById('generateReport');
+    const reportTable = document.getElementById('reportTable');
+    const reportBody = document.getElementById('reportBody');
+    const totalAmountCell = document.getElementById('totalAmount');
 
+    // Event Listener to handle report type change
+    reportTypeSelect.addEventListener('change', (event) => {
+        const reportType = event.target.value;
 
+        // Show/Hide date, month, or year inputs based on selection
+        dateInput.style.display = reportType === 'daily' || reportType === 'weekly' ? 'block' : 'none';
+        monthInput.style.display = reportType === 'monthly' ? 'block' : 'none';
+        yearInput.style.display = reportType === 'yearly' ? 'block' : 'none';
+    });
 
+    // Event Listener for Generate Report Button
+    generateReportBtn.addEventListener('click', async () => {
+        const reportType = reportTypeSelect.value;
+        let reportData = null;
 
+        // Prepare data to send to the backend
+        let apiUrl = '';
+        let payload = {};
 
-document.getElementById('expense-display').addEventListener('change', (e)=>{
-    console.log(e.target.value)
-    if(e.target.value == "daily"){
-        document.getElementById('daily-form').classList.remove('hide')
-        document.getElementById('monthly-form').classList.add('hide')
-        document.getElementById('yearly-form').classList.add('hide')
-    }
-    else if(e.target.value == "monthly"){
-        document.getElementById('monthly-form').classList.remove('hide')
-        document.getElementById('daily-form').classList.add('hide')
-        document.getElementById('yearly-form').classList.add('hide')
-    }
-    else if(e.target.value == "yearly"){
-        document.getElementById('monthly-form').classList.add('hide')
-        document.getElementById('daily-form').classList.add('hide')
-        document.getElementById('yearly-form').classList.remove('hide')
-    }else{
-        
-        document.getElementById('monthly-form').classList.add('hide')
-        document.getElementById('daily-form').classList.add('hide')
-        document.getElementById('yearly-form').classList.add('hide')
-        displayWeekly()
-    }
-})
-
-document.getElementById('daily-form').addEventListener('submit' , async(e)=>{
-    e.preventDefault()
-    const token = localStorage.getItem('token');
-    console.log(e.target.date.value)
-    const date = e.target.date.value
-    try{
-
-        const res = await axios.post('http://34.239.2.148:3000/report/getdate' 
-            ,{date}
-            ,{headers: { "Authorization": token }}
-        )
-        console.log(res)
-        document.getElementById('daily').classList.remove('hide')
-        document.getElementById('monthly').classList.add('hide')
-        document.getElementById('yearly').classList.add('hide')
-        document.getElementById('weekly').classList.add('hide')
-
-
-        const tbody = document.querySelector('#daily table tbody')
-        console.log(tbody)
-        let total =0
-        tbody.innerHTML = ``
-        document.querySelector('#daily h3 span').textContent = date
-        if (res.data && Array.isArray(res.data.data) && res.data.data.length > 0) {
-            res.data.data.forEach(elem => {
-                console.log(elem);
-                const tr = document.createElement('tr');
-                const td1 = document.createElement('td');
-                const td2 = document.createElement('td');
-    
-                td1.textContent = elem.description;
-                td2.textContent = elem.expense;
-    
-                total = total + +elem.expense;
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-    
-                tbody.appendChild(tr);
-            });
-        } else {
-            console.error('Expected array but got:', res.data);
-            alert("No data available for the selected date.");
+        switch (reportType) {
+            case 'daily':
+                const selectedDate = document.getElementById('date').value;
+                apiUrl = '/getdate';
+                payload = { date: selectedDate };
+                break;
+            case 'weekly':
+                const startDate = document.getElementById('date').value;
+                apiUrl = '/getweekly';
+                payload = { date: startDate };
+                break;
+            case 'monthly':
+                const selectedMonth = document.getElementById('month').value;
+                apiUrl = '/getMonthly';
+                payload = { month: selectedMonth };
+                break;
+            case 'yearly':
+                const selectedYear = document.getElementById('year').value;
+                apiUrl = '/getYearly';
+                payload = { year: selectedYear };
+                break;
         }
-        document.getElementById('daily-total').textContent = total
-    }catch(e){
-        console.log(e)
+
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Authentication token not found. Please log in again.');
+            return;
+        }
+
+        try {
+            // Send request with Axios, explicitly passing the token
+            const response = await axiosReportInstance.post(apiUrl, payload,{ headers: { "Authorization": token } });
+
+            if (response.status === 200) {
+                reportData = response.data;
+                generateReportTable(reportData.data);
+            } else {
+                alert('Error generating report. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error fetching report:', error);
+            alert('Error generating report.');
+        }
+    });
+
+    // Function to generate table from report data
+    function generateReportTable(data) {
+        reportBody.innerHTML = ''; // Clear previous data
+        let totalAmount = 0;
+
+        if (data && Array.isArray(data)) {
+        data.forEach((expense) => {
+            const row = document.createElement('tr');
+
+            // Create cells for Date, Description, Category, and Amount
+            const dateCell = document.createElement('td');
+            dateCell.textContent = new Date(expense.createdAt).toLocaleDateString();
+            row.appendChild(dateCell);
+
+            const descriptionCell = document.createElement('td');
+            descriptionCell.textContent = expense.description;
+            row.appendChild(descriptionCell);
+
+            const categoryCell = document.createElement('td');
+            categoryCell.textContent = expense.category;
+            row.appendChild(categoryCell);
+
+            const amountCell = document.createElement('td');
+            amountCell.textContent = `$${expense.expense}`;
+            row.appendChild(amountCell);
+
+            totalAmount += expense.expense;
+
+            reportBody.appendChild(row);
+        });
+    } else {
+        // Handle case where data is not as expected
+        console.warn('No data found for the report.');
+        reportBody.innerHTML = '<tr><td colspan="4">No data available for the selected report type.</td></tr>';
     }
-})
-
-
-
-document.getElementById('yearly-form').addEventListener('submit' , async(e)=>{
-    e.preventDefault()
-    const token = localStorage.getItem('token');
-    console.log(e.target['year-picker'].value)
-    const year = e.target['year-picker'].value
-    try{
-
-        const res = await axios.post('http://34.239.2.148:3000/report/getYearly' , {year}, { headers: { "Authorization": token } } )
-        console.log(res)
-        document.getElementById('daily').classList.add('hide')
-        document.getElementById('monthly').classList.add('hide')
-        document.getElementById('yearly').classList.remove('hide')
-        document.getElementById('weekly').classList.add('hide')
-
-
-        const tbody = document.querySelector('#yearly table tbody')
-        console.log(tbody)
-        let total =0
-        tbody.innerHTML = ``
-        document.querySelector('#yearly h3 span').textContent = year
-        res.data.forEach(elem => {
-            console.log(elem)
-            const tr = document.createElement('tr')
-            const td1 = document.createElement('td')
-            const td2 = document.createElement('td')
-
-            td1.textContent = elem.month
-            td2.textContent = elem.totalAmount
-
-            total = total + +elem.totalAmount
-            tr.appendChild(td1)
-            tr.appendChild(td2)
-
-            tbody.appendChild(tr)
-
-        })
-
-        document.getElementById('yearly-total').textContent = total
-    }catch(e){
-        console.log(e)
+        totalAmountCell.textContent = `$${totalAmount.toFixed(2)}`;
+        reportTable.style.display = 'table';
     }
-})
+});
 
-document.getElementById('monthly-form').addEventListener('submit' , async(e)=>{
-    e.preventDefault()
-    console.log(e.target['year-picker'].value)
-    const token = localStorage.getItem('token');
-    // const year = e.target['year-picker'].value
-    // const month = e.target['month-picker'].value
-    const month = e.target['year-picker'].value + "-" + e.target['month-picker'].value
-    console.log(month)
-    try{
-
-        const res = await axios.post('http://34.239.2.148:3000/report/getMonthly' , {month}, { headers: { "Authorization": token } } )
-        console.log(res)
-        document.getElementById('daily').classList.add('hide')
-        document.getElementById('monthly').classList.remove('hide')
-        document.getElementById('yearly').classList.add('hide')
-        document.getElementById('weekly').classList.add('hide')
-
-
-        const tbody = document.querySelector('#monthly table tbody')
-        console.log(tbody)
-        let total =0
-        tbody.innerHTML = ``
-        document.querySelector('#monthly h3 span').textContent = e.target['month-picker'].options[e.target['month-picker'].selectedIndex].text
-        res.data.forEach(elem => {
-            console.log(elem)
-            const tr = document.createElement('tr')
-            const td1 = document.createElement('td')
-            const td2 = document.createElement('td')
-
-            td1.textContent = elem.date
-            td2.textContent = elem.totalAmount
-
-            total = total + +elem.totalAmount
-            tr.appendChild(td1)
-            tr.appendChild(td2)
-
-            tbody.appendChild(tr)
-
-        })
-
-        document.getElementById('monthly-total').textContent = total
-    }catch(e){
-        console.log(e)
-    }
-})
-
-
-async function displayWeekly(){
-    const token = localStorage.getItem('token');
-    try{
-
-        const res = await axios.post('http://34.239.2.148:3000/report/getweekly', { headers: { "Authorization": token } })
-        console.log(res)
-        document.getElementById('daily').classList.add('hide')
-        document.getElementById('monthly').classList.add('hide')
-        document.getElementById('yearly').classList.add('hide')
-        document.getElementById('weekly').classList.remove('hide')
-
-
-        const tbody = document.querySelector('#weekly table tbody')
-        console.log(tbody)
-        let total =0
-        tbody.innerHTML = ``
-        // document.querySelector('#weekly h3 span').textContent = year
-        res.data.forEach(elem => {
-            console.log(elem)
-            const tr = document.createElement('tr')
-            const td1 = document.createElement('td')
-            const td2 = document.createElement('td')
-
-            td1.textContent = elem.week
-            td2.textContent = elem.totalAmount
-
-            total = total + +elem.totalAmount
-            tr.appendChild(td1)
-            tr.appendChild(td2)
-
-            tbody.appendChild(tr)
-
-        })
-
-        document.getElementById('weekly-total').textContent = total
-    }catch(e){
-        console.log(e)
-    }
-}
 
 document.addEventListener('DOMContentLoaded', async function() {
     // Check if the user is premium
@@ -242,6 +141,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     // await renderLeaderboard();
 });
 
+
+
+
 // Ensure the parseJwt function is defined if it's not imported from another module
 function parseJwt(token) {
     var base64Url = token.split('.')[1];
@@ -262,4 +164,13 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
 
     // Redirect to login page
     window.location.href = '/login'; // Adjust this path to your actual login page
+});
+
+
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('nav-links');
+
+
+hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('show');
 });

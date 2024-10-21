@@ -32,19 +32,19 @@ app.use(helmet());
 app.use(express.static('public'));
 
 app.use((req, res, next) => {
-  res.setHeader("Content-Security-Policy", "form-action 'self' http://localhost:3000");
+  res.setHeader("Content-Security-Policy", "form-action 'self' http://34.239.2.148");
   next();
 });
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname , 'access.log'), { flags: 'a' });
 app.use(morgan('combined', { stream: accessLogStream }));
 
-// Serve static files from the 'frontend' directory
+
 app.use(express.static(path.join(__dirname, '..', 'frontend'), {
-  index: false // This will prevent index.html from being served by default
+  index: false 
 }));
 
-// Define routes
+
 app.use('/api', userRoute);
 app.use('/expense', expenseRoute);
 app.use('/purchase', purchaseRoute);
@@ -60,7 +60,7 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'frontend', 'login.html'));
 });
 
-// Define relationships
+
 User.hasMany(Expense, { foreignKey: 'userId' });
 Expense.belongsTo(User, { foreignKey: 'userId' });
 
@@ -73,7 +73,7 @@ ForgotPassword.belongsTo(User, { foreignKey: 'userId' });
 User.hasMany(Download, { foreignKey: 'userId' });
 Download.belongsTo(User, { foreignKey: 'userId' });
 
-// Global error handling
+
 process.on('uncaughtException', (err) => {
     console.error('Uncaught Exception:', err);
 });
@@ -82,7 +82,7 @@ process.on('unhandledRejection', (reason, promise) => {
     console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
-// Sync database and start server
+
 sequelize
   .sync()
   .then(result => {

@@ -9,19 +9,15 @@
     box-sizing: border-box;
 }
 
-/* Apply a clean sans-serif font and base background */
+/* Body styling */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #dbeef7;
-    color: #2e6c92;
+    font-family: Arial, sans-serif;
     line-height: 1.6;
-    padding-bottom: 60px; /* To prevent content from hiding behind the footer */
+    background-color: #dbeef7;
 }
 
-/* =========================
-   2. Navbar Styles
-   ========================= */
-   .navbar {
+/* Navbar styling */
+.navbar {
     background: #1b5e87;
     color: #ffffff;
     padding: 10px 20px;
@@ -30,8 +26,19 @@ body {
 /* Flex container for navbar items */
 .navdiv {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Space between logo and hamburger */
     align-items: center;
+    width: 100%; /* Ensure it takes full width */
+}
+
+/* Adjust the hamburger positioning */
+.hamburger {
+    margin-left: auto; /* Push hamburger to the right */
+    font-size: 24px;
+    color: #ffffff;
+    cursor: pointer;
+    background: transparent;
+    border: none;
 }
 
 /* Logo styling */
@@ -72,179 +79,131 @@ body {
     border-radius: 5px; /* Rounded corners */
 }
 
-/* Hamburger icon styling */
-.hamburger {
-    display: none; /* Hide by default */
-    font-size: 24px; /* Size of the icon */
-    cursor: pointer;
+/* Hamburger menu styling */
+
+
+/* Responsive navbar styling for smaller screens */
+@media (max-width: 900px) {
+    /* Hide the nav links by default */
+    #nav-links {
+        display: none;
+        flex-direction: column; /* Stack links vertically */
+        background-color: #1b5e87;
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        padding: 20px;
+        border-radius: 5px;
+        width: 200px;
+        z-index: 1000; /* Ensure it appears above other elements */
+    }
+
+    /* Show the hamburger icon */
+    .hamburger {
+        display: block;
+    }
+
+    /* When hamburger is clicked, show the nav links */
+    #nav-links.active {
+        display: flex; /* Show links in a vertical layout */
+    }
+
+    /* Navigation links styling on mobile */
+    #nav-links a,
+    #nav-links button {
+        width: 100%; /* Make each link take up full width */
+        text-align: left;
+        padding: 10px 0;
+    }
 }
+
 
 /* =========================
    3. Form Styling
    ========================= */
 
-#report-select {
-    max-width: 800px; /* Set max-width to match #report-display */
-    width: 100%; /* Allow full width within the max-width */
-    margin: 20px auto; /* Center the form */
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+/* Report Container Styling */
+/* Report Container Styling */
+.report-container {
+    max-width: 800px;
+    margin: 30px auto;
+    background: #78eeee; /* Updated form background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
-#report-select label {
-    font-weight: bold;
-    color: #495057;
+/* Form and Table Headings */
+h1 {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
 }
 
-#report-select select {
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-/* Hide forms by default */
-.hide {
-    display: none;
-}
-
-#report-select form {
-    background-color: #6bd9f5;
-    padding: 15px 20px;
-    border-radius: 6px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-}
-
-#report-select form label {
+label {
     display: block;
+    font-size: 16px;
     margin-bottom: 5px;
-    font-weight: bold;
-    color: #296993;
+    color: #333;
 }
 
-#report-select form input[type="date"],
-#report-select form select {
+select,
+input {
     width: 100%;
     padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ced4da;
+    margin-bottom: 15px;
+    border: 1px solid #b3dfef;
     border-radius: 4px;
-    font-size: 16px;
 }
 
-#report-select form button {
-    background-color: #007bff;
-    color: #fff;
+/* Button Styling */
+#generateReport {
+    display: block;
+    width: 100%;
     padding: 10px;
+    background-color: #007bff; /* Updated button color */
+    color: rgb(245, 248, 249);
     border: none;
     border-radius: 4px;
-    cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s ease;
-    width: 100%; /* Make the button full width */
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
-#report-select form button:hover {
-    background-color: #0056b3;
+#generateReport:hover {
+    background-color: #0056b3; /* Updated hover color */
 }
 
-/* =========================
-   4. Reports Display Styling
-   ========================= */
-
-#report-display {
-    max-width: 800px; /* Keep this as it is */
-    margin: 30px auto;
-}
-
-#report-display h3 {
-    text-align: center;
-    margin-bottom: 15px;
-    color: #0e3a67;
-}
-
-#report-display h3 span {
-    color: #007bff;
-}
-
-#report-display table {
+/* Table Styling */
+table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #56b9e3;
-    margin-bottom: 30px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
 }
 
-#report-display table th,
-#report-display table td {
-    padding: 12px 15px;
-    border: 1px solid #dee2e6;
-    text-align: center;
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 
-#report-display table th {
-    background-color: #104c87;
-    color: #fff;
+th {
+    background-color: #1c5c7a; /* Updated header background color */
+    color: white; /* White text for contrast */
 }
 
-#report-display table tr:nth-child(even) {
-    background-color: #75c5e7;
+td {
+    background-color: #78c9ce;
+    color: #000; /* White background for clarity */
 }
-
-#report-display table tfoot tr td {
+tfoot {
     font-weight: bold;
-    background-color: #bacee1;
 }
 
-/* =========================
-   5. Responsive Design
-   ========================= */
-
-@media (max-width: 992px) {
-    #report-select {
-        width: 90%; /* Allow for some padding on smaller screens */
-    }
-
-    #report-display table th,
-    #report-display table td {
-        padding: 8px 10px;
-    }
+#totalAmount {
+    text-align: right;
+    color: #000;
 }
-
-@media (max-width: 576px) {
-    #report-select form {
-        padding: 10px 15px;
-    }
-
-    #report-display table th,
-    #report-display table td {
-        padding: 8px;
-        font-size: 14px;
-    }
-
-    /* Show hamburger icon on small screens */
-    .hamburger {
-        display: block; /* Show the hamburger icon */
-    }
-
-    /* Hide navigation links on small screens */
-    #nav-links {
-        display: none; /* Hide links initially */
-        flex-direction: column; /* Stack links vertically */
-        position: absolute; /* Position it for absolute control */
-        background: #1b5e87; /* Same background as navbar */
-        top: 60px; /* Position below the navbar */
-        width: 100%; /* Full width */
-        z-index: 10; /* Above other content */
-    }
-
-    /* Show nav links when the hamburger is clicked */
-    #nav-links.show {
-        display: flex; /* Show links when toggled */
-    }
-}
-
 /* =========================
    6. Utility Classes
    ========================= */

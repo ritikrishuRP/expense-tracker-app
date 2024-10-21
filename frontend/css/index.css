@@ -1,4 +1,5 @@
 /* General Reset */
+/* Universal Reset */
 * {
     margin: 0;
     padding: 0;
@@ -22,8 +23,19 @@ body {
 /* Flex container for navbar items */
 .navdiv {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Space between logo and hamburger */
     align-items: center;
+    width: 100%; /* Ensure it takes full width */
+}
+
+/* Adjust the hamburger positioning */
+.hamburger {
+    margin-left: auto; /* Push hamburger to the right */
+    font-size: 24px;
+    color: #ffffff;
+    cursor: pointer;
+    background: transparent;
+    border: none;
 }
 
 /* Logo styling */
@@ -64,6 +76,44 @@ body {
     border-radius: 5px; /* Rounded corners */
 }
 
+/* Hamburger menu styling */
+
+
+/* Responsive navbar styling for smaller screens */
+@media (max-width: 900px) {
+    /* Hide the nav links by default */
+    #nav-links {
+        display: none;
+        flex-direction: column; /* Stack links vertically */
+        background-color: #1b5e87;
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        padding: 20px;
+        border-radius: 5px;
+        width: 200px;
+        z-index: 1000; /* Ensure it appears above other elements */
+    }
+
+    /* Show the hamburger icon */
+    .hamburger {
+        display: block;
+    }
+
+    /* When hamburger is clicked, show the nav links */
+    #nav-links.active {
+        display: flex; /* Show links in a vertical layout */
+    }
+
+    /* Navigation links styling on mobile */
+    #nav-links a,
+    #nav-links button {
+        width: 100%; /* Make each link take up full width */
+        text-align: left;
+        padding: 10px 0;
+    }
+}
+
 /* Custom button (Show Leaderboard) styling */
 #showLeaderboardBtn {
     color: #ffffff;
@@ -102,7 +152,7 @@ body {
 }
 
 /* Responsive styles */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .navdiv {
         flex-direction: column; /* Stack elements vertically */
         align-items: flex-start; /* Align to the left */
@@ -245,14 +295,12 @@ h1 {
     display: none;
 }
 
-/* Styling for the expense list container */
 .expense-list {
     list-style-type: none; /* Remove default list styling */
     padding: 0;
     margin: 20px 0;
     background: #62c0eb;
-    border-radius: 8px;
-    padding: 20px;
+    border-radius: 10px;
     max-width: 1000px; /* Same width as the card */
     margin: 20px auto;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -261,56 +309,94 @@ h1 {
 /* Grid container for the headings and list items */
 .expense-list-header, .expense-list-item {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr 1fr; /* Create columns for Amount, Description, Category, and Actions */
+    grid-template-columns: repeat(5, 1fr); /* Create columns for Date, Amount, Description, Category, and Actions */
     padding: 10px 0;
     border-bottom: 1px solid #040a0c; /* Add a line between items */
     align-items: center;
 }
 
+/* Styling for headers */
 .expense-list-header {
+    border-radius: 10px;
     font-weight: bold;
     background-color: #1c5c7a; /* Dark background for the header */
     color: #ffffff; /* White text color for contrast */
     border-bottom: 2px solid #ccc; /* Thicker line under header */
-    padding: 10px 0; /* Padding for the header for better spacing */
+}
+
+/* Uniform header and item spacing */
+.expense-list-header div,
+.expense-list-item div {
+    padding: 10px 15px; /* Uniform padding for all header and item cells */
+}
+
+/* Specific padding for the Description header */
+.expense-list-header div:nth-child(2),
+.expense-list-item div:nth-child(2) {
+    padding-left: 5px; /* Shift Description slightly to the left */
+}
+
+.expense-list-item div:first-child {
+    padding-left: 5px; /* Adjust this value to shift the Date content */
+}
+
+/* Hide the Actions column */
+.expense-list-header div:last-child {
+    display: none;
 }
 
 /* Expense list items */
 .expense-list-item {
     background-color: #78caca;
-    border-radius: 4px;
-    padding: 10px;
+    border-radius: 10px;
+    padding: 10px; /* Optional padding for items, can be adjusted or removed */
 }
 
 .expense-list-item button {
-    margin-left: auto; /* Push button to the far right */
-    background: #1b97cd; /* Red delete button */
+    margin: 20px auto;
+    background: #1b97cd; /* Blue delete button */
     color: white;
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
+    width: 100px; /* Set a fixed width */
 }
 
 .expense-list-item button:hover {
-    background: #10272b; /* Lighter red on hover */
+    background: #10272b; /* Darker blue on hover */
 }
 
 /* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
-    .expense-list-header, .expense-list-item {
-        grid-template-columns: 1fr; /* Stack columns vertically on smaller screens */
-        text-align: left;
+   
+
+    .expense-list-header div,
+    .expense-list-item div {
+        display: flex; /* Use flexbox for better alignment */
+        justify-content: space-between; /* Space between items */
+        padding: 10px; /* Consistent padding */
+    }
+
+    /* Hide the Category and Actions columns on smaller screens */
+    .expense-list-header div:nth-child(4),
+    .expense-list-item div:nth-child(4),
+    .expense-list-header div:last-child,
+    .expense-list-item div:last-child {
+        display: none; 
+    }
+
+    .expense-list-item {
+        margin-bottom: 10px; /* Space between items */
+    }
+
+    .expense-list-item button {
+        width: 100%; /* Button takes full width */
+        margin: 10px 0; /* Adjust margins for better spacing */
     }
 }
 
-.expense-list-header div:last-child {
-    margin-right: 20px; /* Add right margin to the Action header */
-}
-/* Add this to improve the alignment of the Amount header */
-.expense-list-header div:nth-child(1) {
-    padding-left: 20px; /* Add left padding to the Amount header */
-}
+
 
 /* Upcoming Expense List */
 
@@ -515,6 +601,8 @@ h1 {
     display: none;
 }
 
+
+
 /* Header for the download section */
 #download-urls h3 {
     font-size: 1.5em;
@@ -586,4 +674,81 @@ h1 {
     opacity: 0.6;           /* Maintain opacity on hover */
 }
 
+/* Pagination container styling */
+#pagination-controls {
+    display: flex;
+    justify-content: center; /* Center the controls horizontally */
+    align-items: center; /* Align the controls vertically */
+    margin-top: 20px; /* Add spacing from the content above */
+}
 
+/* Styling for the buttons */
+#pagination-controls button {
+    background-color: #007bff; /* Blue color for buttons */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px; /* Add space between the buttons */
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect for buttons */
+#pagination-controls button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Disabled button styling */
+#pagination-controls button:disabled {
+    background-color: #cccccc; /* Grey color for disabled state */
+    cursor: not-allowed; /* Show not-allowed cursor on disabled buttons */
+}
+
+/* Current page styling */
+#current-page {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 0 10px; /* Add space between the buttons */
+}
+
+/* Style for the container of the label and dropdown */
+div.page-size-container {
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Center items vertically */
+    margin-left: auto; /* Push it to the right */
+}
+
+/* Label styling */
+div.page-size-container label {
+    font-size: 16px; /* Font size */
+    margin-right: 10px; /* Space between label and dropdown */
+    color: #555; /* Color for the label */
+}
+
+/* Dropdown select styling */
+#page-size {
+    padding: 6px 10px; /* Reduced padding for smaller height */
+    font-size: 14px; /* Font size */
+    border-radius: 8px; /* Rounded corners */
+    border: 2px solid #ccc; /* Border styling */
+    background-color: #fff; /* Background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transition effects */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Dropdown hover effect */
+#page-size:hover {
+    border-color: #007bff; /* Change border color on hover */
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2); /* Enhanced shadow */
+}
+
+/* Dropdown focus effect */
+#page-size:focus {
+    border-color: #007bff; /* Border color on focus */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.5); /* Glow effect on focus */
+}

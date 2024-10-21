@@ -25,7 +25,7 @@ const forgotpassword = async (req,res) => {
             from: 'rrishu212@gmail.com',
             subject: 'Expense Tracker ForgotPassword',
             text: 'You will click on the link below to reset password',
-            html: `<a href="//password/resetpassword/${id}">Reset password</a>`,
+            html: `<a href="http://34.239.2.148/password/resetpassword/${id}">Reset password</a>`,
         }
 
         sgMail
@@ -53,18 +53,88 @@ const resetpassword = async (req,res) => {
             forgotpasswordrequest.update({active: false});
             res.status(200).send(`
                 <html>
-                  <script>
-                      function formsubmitted(e){
-                        e.preventDefault();
-                        console.log('called')
-                      }
-                  </script>
+<head>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f4f7;
+            font-family: Arial, sans-serif;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-                  <form action='/password/updatepassword/${id}' method='get'>
-                     <label for='newpassword'>Enter New Password</label>
-                     <input name='newpassword' type='password' required></input>
-                  </form>
-                </html>
+        /* Label styling */
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Input field styling */
+        input[type="password"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Button styling */
+        button {
+            padding: 12px;
+            background-color: #254336; /* Dark green */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838; /* Brighter green on hover */
+        }
+
+        /* Error message styling */
+        #errorMessage {
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function formsubmitted(e) {
+            e.preventDefault();
+            console.log('called');
+            // You can handle additional logic for form submission here
+        }
+    </script>
+
+    <!-- Form for updating the password -->
+    <form action='http://34.239.2.148/password/updatepassword/${id}' method='get'>
+        <label for='newpassword'>Enter New Password</label>
+        <input name='newpassword' id='newpassword' type='password' required></input>
+
+        <!-- Confirm Button -->
+        <button type="submit">Confirm New Password</button>
+    </form>
+</body>
+</html>
                 `)
 
                 res.end();
@@ -95,10 +165,11 @@ const updatepassword = async(req,res) => {
                                 throw new Error(err);
                             }
                             user.update({password: hash}).then(() => {
-                                res.status(201).json({message: 'Successfully update the new password'})
+                                res.status(201).redirect('/login?success=true');
                             })
                         })
                     })
+
                 } else {
                     return res.status(404).json({ error: 'No user Exists', success: false})
                 }

@@ -1,32 +1,28 @@
 const { Op, fn, col } = require('sequelize');
-const sequelize = require('../util/database'); // Adjust this import if needed
-const User = require('../model/user.model'); // Import your User model if needed
 
 const getDailyReport = async (req, res) => {
     try {
         if (req.user.ispremiumUser) {
-            // Hardcoded date for testing
-            const date = '2024-10-15'; // Change this to the date you are testing
+            const date = req.body.date; // Get date from the request body
             console.log('Testing date:', date);
             
-            // Convert date to start and end of the day
-            const startDate = new Date(date + 'T00:00:00Z'); // Adjust for UTC
-            const endDate = new Date(date + 'T23:59:59Z'); // Adjust for UTC
+            const startDate = new Date(date + 'T00:00:00Z'); 
+            const endDate = new Date(date + 'T23:59:59Z'); 
             
             console.log('Start Date:', startDate);
             console.log('End Date:', endDate);
 
-            // Fetch expenses for the specified date
             const data = await req.user.getExpenses({
                 where: {
                     createdAt: {
                         [Op.gte]: startDate,
-                        [Op.lte]: endDate // Change to lte to include end of the day
+                        [Op.lte]: endDate 
                     }
                 },
-                attributes: ['description', 'expense', 'createdAt']
+                attributes: ['description', 'expense', 'category','createdAt']
             });
 
+            // Check if no expenses found
             if (data.length === 0) {
                 console.log('No expenses found for the selected date.');
             }
@@ -59,7 +55,7 @@ const getWeeklyReport = async (req, res) => {
                         [Op.lte]: endOfWeek
                     }
                 },
-                attributes: ['description', 'expense', 'createdAt']
+                attributes: ['description', 'expense','category', 'createdAt']
             });
 
             // Return expenses directly
@@ -73,18 +69,10 @@ const getWeeklyReport = async (req, res) => {
     }
 };
 
-
-
-// Helper function to format the weekly report remains the same
-
-
-// Helper function to format the weekly report
-
-
 const getMonthlyReport = async (req, res) => {
     try {
         if (req.user.ispremiumUser) {
-            const { month } = req.body; // Expected format: 'YYYY-MM'
+            const { month } = req.body; 
 
             if (!month) {
                 return res.status(400).json({ success: false, msg: "Month is required" });
@@ -94,11 +82,13 @@ const getMonthlyReport = async (req, res) => {
             const startDate = new Date(year, monthNum - 1, 1);
             const endDate = new Date(year, monthNum, 1);
 
-            // Fetch expenses grouped by date
+            // Fetch monthly expenses
             const result = await req.user.getExpenses({
                 attributes: [
-                    [fn('DATE', col('createdAt')), 'date'],
-                    [fn('SUM', col('expense')), 'totalAmount']
+                    'description', 
+                    'expense', 
+                    'category',
+                    'createdAt'
                 ],
                 where: {
                     createdAt: {
@@ -106,11 +96,10 @@ const getMonthlyReport = async (req, res) => {
                         [Op.lt]: endDate
                     }
                 },
-                group: [fn('DATE', col('createdAt'))],
                 raw: true
             });
 
-            return res.json(result);
+            return res.json({ success: true, data: result });
         } else {
             return res.status(403).json({ success: false, msg: "You are not a premium user" });
         }
@@ -123,7 +112,7 @@ const getMonthlyReport = async (req, res) => {
 const getYearlyReport = async (req, res) => {
     try {
         if (req.user.ispremiumUser) {
-            const { year } = req.body; // Expected format: 'YYYY'
+            const { year } = req.body;
 
             if (!year) {
                 return res.status(400).json({ success: false, msg: "Year is required" });
@@ -132,11 +121,12 @@ const getYearlyReport = async (req, res) => {
             const startYear = new Date(year, 0, 1);
             const endYear = new Date(parseInt(year) + 1, 0, 1);
 
-            // Fetch expenses grouped by month name
             const result = await req.user.getExpenses({
                 attributes: [
-                    [fn('MONTHNAME', col('createdAt')), 'month'],
-                    [fn('SUM', col('expense')), 'totalAmount']
+                    'description', 
+                    'expense', 
+                    'category',
+                    'createdAt'
                 ],
                 where: {
                     createdAt: {
@@ -144,11 +134,10 @@ const getYearlyReport = async (req, res) => {
                         [Op.lt]: endYear
                     }
                 },
-                group: [fn('MONTHNAME', col('createdAt'))],
                 raw: true
             });
 
-            return res.json(result);
+            return res.json({ success: true, data: result });
         } else {
             return res.status(403).json({ success: false, msg: "You are not a premium user" });
         }

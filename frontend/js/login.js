@@ -1,7 +1,7 @@
 document.getElementById('login').addEventListener('submit', function(event){
     event.preventDefault();
 
-    console.log('Form submitted'); // Check if this event fires
+    console.log('Form submitted'); 
 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -9,7 +9,6 @@ document.getElementById('login').addEventListener('submit', function(event){
 
     errorMessage.textContent = '';
 
-    // Validate input fields
     if (!email) {
         errorMessage.textContent = 'Email is required';
         return;
@@ -24,22 +23,21 @@ document.getElementById('login').addEventListener('submit', function(event){
         password: password
     }
 
-    // Log the data being sent
+   
     console.log('Sending login details:', loginDetail);
 
-    axios.post('http://34.239.2.148:3000/api/login', loginDetail)
+    axios.post('http://34.239.2.148/api/login', loginDetail)
     .then(response => {
-        console.log('Login response received:', response.data); // Log the full response
+        console.log('Login response received:', response.data); 
         document.getElementById('email').value = '';
         document.getElementById('password').value = '';
 
-        // Check if the token exists in the response
+        
         if (response.data && response.data.token) {
             console.log('Token received:', response.data.token);
             localStorage.setItem('token', response.data.token);
             console.log('Token saved to localStorage:', localStorage.getItem('token'));
 
-            // Log before redirecting
             console.log('Redirecting to index.html');
             window.location.href = "../index.html";
         } else {
@@ -50,3 +48,10 @@ document.getElementById('login').addEventListener('submit', function(event){
         console.log('Error in creating login post:', error.response ? error.response.data : error.message);
     });
 });
+
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('success') === 'true') {
+    alert('Password successfully updated!'); // Simple alert message
+}
+
+

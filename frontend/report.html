@@ -21,155 +21,63 @@
                 <li><button id="logoutBtn">Log Out</button></li>
             </ul>
             <div class="hamburger" id="hamburger">
-                &#9776; <!-- This is the hamburger icon (three horizontal lines) -->
+                &#9776; 
             </div>
         </div>
     </nav>
-    <div class="" id="report-select">
-        <label for="expense-display">Expenses : </label>
-
-        <select name="expense-display" id="expense-display">
-            <option value="daily">Day wise</option>
+    <div class="report-container">
+        <h1>Expense Reports</h1>
+        
+        <!-- Report Type Selection -->
+        <label for="reportType">Select Report Type:</label>
+        <select id="reportType">
+            <option value="daily">Daily</option>
             <option value="weekly">Weekly</option>
             <option value="monthly">Monthly</option>
             <option value="yearly">Yearly</option>
         </select>
 
-        <form class="my-2" id="daily-form">
-            <label for="date">Select the date : </label>
-            <input type="date" name="date" id="date" required>
-            <button type="submit">submit</button>
-        </form>
-
-        <form class="hide my-2" id="monthly-form">
-            <label for="month-picker">Select the month : </label>
-
-            <select name="month-picker" id="month-picker" required>
-                <option value="01">January</option>
-                <option value="02">February</option>
-                <option value="03">March</option>
-                <option value="04">April</option>
-                <option value="05">May</option>
-                <option value="06">June</option>
-                <option value="07">July</option>
-                <option value="08">August</option>
-                <option value="09">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-
-            </select>
-            <label for="year-picker">Select the year : </label>
-
-            <select name="year-picker" id="year-picker" required>
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-
-            </select>
-
-            <button type="submit">Submit</button>
-        </form>
-
-
-        <form class="hide my-2" id="yearly-form">
-            <label for="year-picker">Select the year : </label>
-
-            <select name="year-picker" id="year-picker" required>
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-
-            </select>
-
-            <button type="submit">Submit</button>
-        </form>
-
-
-    </div>
-    <div id="report-display">
-        <div class="hide container" id="daily">
-            <h3> day to day expense report for the day : <span></span></h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>description</th>
-                        <th>amount</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Total</td>
-                        <td id="daily-total">0</td>
-                    </tr>
-                </tfoot>
-            </table>
+        <!-- Date Picker -->
+        <div id="dateInput">
+            <label for="date">Select Date:</label>
+            <input type="date" id="date" />
         </div>
-        <div class="hide" id="weekly">
-            <h3>Weekly expense report</h3>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>day of week</th>
-                        <th>amount</th>
-                    </tr>
-                </thead>
-                <tbody>
 
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Total</td>
-                        <td id="weekly-total">0</td>
-                    </tr>
-                </tfoot>
-            </table>
+        <!-- Month Picker -->
+        <div id="monthInput" style="display: none;">
+            <label for="month">Select Month:</label>
+            <input type="month" id="month" />
         </div>
-        <div class="hide" id="monthly">
-            <h3>Monthly expense report for the month: <span></span></h3>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-                <tbody>
 
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Total</td>
-                        <td id="monthly-total">0</td>
-                    </tr>
-                </tfoot>
-            </table>
+        <!-- Year Picker -->
+        <div id="yearInput" style="display: none;">
+            <label for="year">Select Year:</label>
+            <input type="number" id="year" min="2000" max="2100" placeholder="e.g., 2024" />
         </div>
-        <div class="hide" id="yearly">
-            <h3>Yearly expense report for the year : <span></span></h3>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>month</th>
-                        <th>amount</th>
-                    </tr>
-                </thead>
-                <tbody>
 
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td>Total</td>
-                        <td id="yearly-total">0</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+        <!-- Generate Report Button -->
+        <button id="generateReport">Generate Report</button>
+
+        <!-- Report Table -->
+        <table id="reportTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="reportBody">
+                <!-- Rows will be dynamically generated here -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong>Total Amount:</strong></td>
+                    <td id="totalAmount" style="text-align: left;"><strong>$0</strong></td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
     
 </body>
