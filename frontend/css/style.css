@@ -9,15 +9,19 @@
     box-sizing: border-box;
 }
 
-/* Body styling */
+/* Apply a clean sans-serif font and base background */
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #dbeef7;
+    color: #2e6c92;
+    line-height: 1.6;
+    padding-bottom: 60px; /* To prevent content from hiding behind the footer */
 }
 
-/* Navbar styling */
-.navbar {
+/* =========================
+   2. Navbar Styles
+   ========================= */
+   .navbar {
     background: #1b5e87;
     color: #ffffff;
     padding: 10px 20px;
@@ -26,19 +30,8 @@ body {
 /* Flex container for navbar items */
 .navdiv {
     display: flex;
-    justify-content: space-between; /* Space between logo and hamburger */
+    justify-content: space-between;
     align-items: center;
-    width: 100%; /* Ensure it takes full width */
-}
-
-/* Adjust the hamburger positioning */
-.hamburger {
-    margin-left: auto; /* Push hamburger to the right */
-    font-size: 24px;
-    color: #ffffff;
-    cursor: pointer;
-    background: transparent;
-    border: none;
 }
 
 /* Logo styling */
@@ -79,44 +72,12 @@ body {
     border-radius: 5px; /* Rounded corners */
 }
 
-/* Hamburger menu styling */
-
-
-/* Responsive navbar styling for smaller screens */
-@media (max-width: 900px) {
-    /* Hide the nav links by default */
-    #nav-links {
-        display: none;
-        flex-direction: column; /* Stack links vertically */
-        background-color: #1b5e87;
-        position: absolute;
-        top: 50px;
-        right: 10px;
-        padding: 20px;
-        border-radius: 5px;
-        width: 200px;
-        z-index: 1000; /* Ensure it appears above other elements */
-    }
-
-    /* Show the hamburger icon */
-    .hamburger {
-        display: block;
-    }
-
-    /* When hamburger is clicked, show the nav links */
-    #nav-links.active {
-        display: flex; /* Show links in a vertical layout */
-    }
-
-    /* Navigation links styling on mobile */
-    #nav-links a,
-    #nav-links button {
-        width: 100%; /* Make each link take up full width */
-        text-align: left;
-        padding: 10px 0;
-    }
+/* Hamburger icon styling */
+.hamburger {
+    display: none; /* Hide by default */
+    font-size: 24px; /* Size of the icon */
+    cursor: pointer;
 }
-
 
 /* =========================
    3. Form Styling
@@ -129,6 +90,7 @@ body {
     margin: 30px auto;
     background: #78eeee; /* Updated form background */
     padding: 20px;
+    
     border-radius: 8px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
